@@ -1,3 +1,11 @@
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/dm-sans/400.css";
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/600.css";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -72,14 +80,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Kompta — Comptabilité OHADA pour entreprises camerounaises" },
+      {
+        name: "description",
+        content:
+          "Logiciel SaaS de comptabilité OHADA multi-entreprises pour PME, cabinets et associations au Cameroun. Fiscalité paramétrable, DSF, états SYSCOHADA.",
+      },
+      { name: "theme-color", content: "#0b1d3a" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:locale", content: "fr_FR" },
+      { property: "og:site_name", content: "Kompta" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {

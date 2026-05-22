@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TarifsRouteImport } from './routes/tarifs'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as LegalRouteImport } from './routes/legal'
+import { Route as FonctionnalitesRouteImport } from './routes/fonctionnalites'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CabinetsRouteImport } from './routes/cabinets'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TarifsRoute = TarifsRouteImport.update({
+  id: '/tarifs',
+  path: '/tarifs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRoute = LegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FonctionnalitesRoute = FonctionnalitesRouteImport.update({
+  id: '/fonctionnalites',
+  path: '/fonctionnalites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CabinetsRoute = CabinetsRouteImport.update({
+  id: '/cabinets',
+  path: '/cabinets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cabinets': typeof CabinetsRoute
+  '/contact': typeof ContactRoute
+  '/fonctionnalites': typeof FonctionnalitesRoute
+  '/legal': typeof LegalRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tarifs': typeof TarifsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cabinets': typeof CabinetsRoute
+  '/contact': typeof ContactRoute
+  '/fonctionnalites': typeof FonctionnalitesRoute
+  '/legal': typeof LegalRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tarifs': typeof TarifsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cabinets': typeof CabinetsRoute
+  '/contact': typeof ContactRoute
+  '/fonctionnalites': typeof FonctionnalitesRoute
+  '/legal': typeof LegalRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tarifs': typeof TarifsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/cabinets'
+    | '/contact'
+    | '/fonctionnalites'
+    | '/legal'
+    | '/sitemap.xml'
+    | '/tarifs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/cabinets'
+    | '/contact'
+    | '/fonctionnalites'
+    | '/legal'
+    | '/sitemap.xml'
+    | '/tarifs'
+  id:
+    | '__root__'
+    | '/'
+    | '/cabinets'
+    | '/contact'
+    | '/fonctionnalites'
+    | '/legal'
+    | '/sitemap.xml'
+    | '/tarifs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CabinetsRoute: typeof CabinetsRoute
+  ContactRoute: typeof ContactRoute
+  FonctionnalitesRoute: typeof FonctionnalitesRoute
+  LegalRoute: typeof LegalRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TarifsRoute: typeof TarifsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tarifs': {
+      id: '/tarifs'
+      path: '/tarifs'
+      fullPath: '/tarifs'
+      preLoaderRoute: typeof TarifsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal': {
+      id: '/legal'
+      path: '/legal'
+      fullPath: '/legal'
+      preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fonctionnalites': {
+      id: '/fonctionnalites'
+      path: '/fonctionnalites'
+      fullPath: '/fonctionnalites'
+      preLoaderRoute: typeof FonctionnalitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cabinets': {
+      id: '/cabinets'
+      path: '/cabinets'
+      fullPath: '/cabinets'
+      preLoaderRoute: typeof CabinetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +177,23 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CabinetsRoute: CabinetsRoute,
+  ContactRoute: ContactRoute,
+  FonctionnalitesRoute: FonctionnalitesRoute,
+  LegalRoute: LegalRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TarifsRoute: TarifsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

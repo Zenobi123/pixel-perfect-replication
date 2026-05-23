@@ -39,13 +39,13 @@ export function Header() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link
-            to="/contact"
+            to={"/login" as never}
             className="rounded-md px-4 py-2 text-sm font-medium text-foreground transition-colors hover:text-accent"
           >
             Se connecter
           </Link>
           <Link
-            to="/tarifs"
+            to={"/signup" as never}
             className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-card transition-all hover:opacity-90 hover:shadow-elegant"
           >
             Essai gratuit
@@ -76,7 +76,7 @@ export function Header() {
               </Link>
             ))}
             <Link
-              to="/tarifs"
+              to={"/signup" as never}
               onClick={() => setOpen(false)}
               className="mt-2 block rounded-md bg-primary px-3 py-2 text-center text-sm font-medium text-primary-foreground"
             >

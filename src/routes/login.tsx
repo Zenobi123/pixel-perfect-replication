@@ -32,7 +32,7 @@ function LoginPage() {
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/app" });
+    navigate({ to: "/app" as never });
   };
 
   const handleGoogle = async () => {
@@ -46,7 +46,7 @@ function LoginPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/app" });
+    navigate({ to: "/app" as never });
   };
 
   return (
@@ -85,7 +85,7 @@ function LoginPage() {
 
         <p className="text-center text-sm text-muted-foreground">
           Pas encore de compte ?{" "}
-          <Link to="/signup" className="font-medium text-primary hover:underline">Créer un compte</Link>
+          <Link to={"/signup" as never} className="font-medium text-primary hover:underline">Créer un compte</Link>
         </p>
       </div>
     </div>

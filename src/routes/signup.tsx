@@ -38,7 +38,7 @@ function SignupPage() {
     setLoading(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Compte créé. Vérifiez votre email pour confirmer.");
-    navigate({ to: "/login" });
+    navigate({ to: "/login" as never });
   };
 
   const handleGoogle = async () => {
@@ -48,7 +48,7 @@ function SignupPage() {
     });
     if (result.error) { setLoading(false); toast.error("Échec de l'inscription Google"); return; }
     if (result.redirected) return;
-    navigate({ to: "/app" });
+    navigate({ to: "/app" as never });
   };
 
   return (
@@ -92,7 +92,7 @@ function SignupPage() {
 
         <p className="text-center text-sm text-muted-foreground">
           Déjà inscrit ?{" "}
-          <Link to="/login" className="font-medium text-primary hover:underline">Se connecter</Link>
+          <Link to={"/login" as never} className="font-medium text-primary hover:underline">Se connecter</Link>
         </p>
       </div>
     </div>

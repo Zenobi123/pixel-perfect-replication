@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_authenticated/app")({
       .select("id")
       .limit(1);
     if ((!ents || ents.length === 0) && !location.pathname.startsWith("/onboarding")) {
-      throw redirect({ to: "/onboarding" });
+      throw redirect({ to: "/onboarding" as never });
     }
   },
   component: AppLayout,

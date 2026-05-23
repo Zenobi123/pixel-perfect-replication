@@ -27,7 +27,7 @@ function Onboarding() {
     setLoading(true);
     const { data, error } = await supabase.rpc("create_entreprise_with_owner", {
       _raison_sociale: raisonSociale,
-      _niu: niu || null,
+      _niu: niu || undefined,
       _regime: regime,
       _devise: "XAF",
     });
@@ -37,7 +37,7 @@ function Onboarding() {
       localStorage.setItem("kompta.current_entreprise_id", data as string);
     }
     toast.success("Entreprise créée");
-    navigate({ to: "/app" });
+    navigate({ to: "/app" as never });
   };
 
   return (

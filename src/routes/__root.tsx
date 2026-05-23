@@ -6,7 +6,7 @@ import "@fontsource/dm-sans/400.css";
 import "@fontsource/dm-sans/500.css";
 import "@fontsource/dm-sans/600.css";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -15,6 +15,11 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
+
+import { AuthProvider } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
+import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 

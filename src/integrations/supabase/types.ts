@@ -55,6 +55,173 @@ export type Database = {
           },
         ]
       }
+      comptes: {
+        Row: {
+          actif: boolean
+          classe: number
+          created_at: string
+          entreprise_id: string
+          est_collectif: boolean
+          id: string
+          libelle: string
+          numero: string
+          parent_id: string | null
+          sens: Database["public"]["Enums"]["compte_sens"]
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          classe: number
+          created_at?: string
+          entreprise_id: string
+          est_collectif?: boolean
+          id?: string
+          libelle: string
+          numero: string
+          parent_id?: string | null
+          sens?: Database["public"]["Enums"]["compte_sens"]
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          classe?: number
+          created_at?: string
+          entreprise_id?: string
+          est_collectif?: boolean
+          id?: string
+          libelle?: string
+          numero?: string
+          parent_id?: string | null
+          sens?: Database["public"]["Enums"]["compte_sens"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comptes_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comptes_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comptes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comptes_ohada_template: {
+        Row: {
+          classe: number
+          created_at: string
+          est_collectif: boolean
+          libelle: string
+          numero: string
+          sens: Database["public"]["Enums"]["compte_sens"]
+        }
+        Insert: {
+          classe: number
+          created_at?: string
+          est_collectif?: boolean
+          libelle: string
+          numero: string
+          sens?: Database["public"]["Enums"]["compte_sens"]
+        }
+        Update: {
+          classe?: number
+          created_at?: string
+          est_collectif?: boolean
+          libelle?: string
+          numero?: string
+          sens?: Database["public"]["Enums"]["compte_sens"]
+        }
+        Relationships: []
+      }
+      ecritures: {
+        Row: {
+          contrepasse_par: string | null
+          created_at: string
+          created_by: string
+          date_piece: string
+          entreprise_id: string
+          exercice_id: string
+          id: string
+          journal_id: string
+          libelle: string
+          numero: number
+          reference: string | null
+          statut: Database["public"]["Enums"]["ecriture_statut"]
+          updated_at: string
+          validee_le: string | null
+          validee_par: string | null
+        }
+        Insert: {
+          contrepasse_par?: string | null
+          created_at?: string
+          created_by?: string
+          date_piece: string
+          entreprise_id: string
+          exercice_id: string
+          id?: string
+          journal_id: string
+          libelle: string
+          numero: number
+          reference?: string | null
+          statut?: Database["public"]["Enums"]["ecriture_statut"]
+          updated_at?: string
+          validee_le?: string | null
+          validee_par?: string | null
+        }
+        Update: {
+          contrepasse_par?: string | null
+          created_at?: string
+          created_by?: string
+          date_piece?: string
+          entreprise_id?: string
+          exercice_id?: string
+          id?: string
+          journal_id?: string
+          libelle?: string
+          numero?: number
+          reference?: string | null
+          statut?: Database["public"]["Enums"]["ecriture_statut"]
+          updated_at?: string
+          validee_le?: string | null
+          validee_par?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecritures_contrepasse_par_fkey"
+            columns: ["contrepasse_par"]
+            isOneToOne: false
+            referencedRelation: "ecritures"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ecritures_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ecritures_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ecritures_journal_id_fkey"
+            columns: ["journal_id"]
+            isOneToOne: false
+            referencedRelation: "journaux"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       entreprises: {
         Row: {
           adresse: string | null
@@ -162,6 +329,128 @@ export type Database = {
           },
         ]
       }
+      journaux: {
+        Row: {
+          actif: boolean
+          code: string
+          compte_contrepartie_id: string | null
+          created_at: string
+          entreprise_id: string
+          id: string
+          libelle: string
+          type: Database["public"]["Enums"]["journal_type"]
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          code: string
+          compte_contrepartie_id?: string | null
+          created_at?: string
+          entreprise_id: string
+          id?: string
+          libelle: string
+          type: Database["public"]["Enums"]["journal_type"]
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          code?: string
+          compte_contrepartie_id?: string | null
+          created_at?: string
+          entreprise_id?: string
+          id?: string
+          libelle?: string
+          type?: Database["public"]["Enums"]["journal_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journaux_compte_contrepartie_id_fkey"
+            columns: ["compte_contrepartie_id"]
+            isOneToOne: false
+            referencedRelation: "comptes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journaux_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lignes_ecriture: {
+        Row: {
+          compte_id: string
+          created_at: string
+          credit: number
+          debit: number
+          ecriture_id: string
+          entreprise_id: string
+          id: string
+          lettrage: string | null
+          libelle: string | null
+          ordre: number
+          tiers_id: string | null
+        }
+        Insert: {
+          compte_id: string
+          created_at?: string
+          credit?: number
+          debit?: number
+          ecriture_id: string
+          entreprise_id: string
+          id?: string
+          lettrage?: string | null
+          libelle?: string | null
+          ordre?: number
+          tiers_id?: string | null
+        }
+        Update: {
+          compte_id?: string
+          created_at?: string
+          credit?: number
+          debit?: number
+          ecriture_id?: string
+          entreprise_id?: string
+          id?: string
+          lettrage?: string | null
+          libelle?: string | null
+          ordre?: number
+          tiers_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lignes_ecriture_compte_id_fkey"
+            columns: ["compte_id"]
+            isOneToOne: false
+            referencedRelation: "comptes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lignes_ecriture_ecriture_id_fkey"
+            columns: ["ecriture_id"]
+            isOneToOne: false
+            referencedRelation: "ecritures"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lignes_ecriture_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lignes_ecriture_tiers_id_fkey"
+            columns: ["tiers_id"]
+            isOneToOne: false
+            referencedRelation: "tiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memberships: {
         Row: {
           created_at: string
@@ -221,6 +510,69 @@ export type Database = {
         }
         Relationships: []
       }
+      tiers: {
+        Row: {
+          actif: boolean
+          adresse: string | null
+          code: string
+          compte_id: string | null
+          created_at: string
+          email: string | null
+          entreprise_id: string
+          id: string
+          niu: string | null
+          raison_sociale: string
+          telephone: string | null
+          type: Database["public"]["Enums"]["tiers_type"]
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          adresse?: string | null
+          code: string
+          compte_id?: string | null
+          created_at?: string
+          email?: string | null
+          entreprise_id: string
+          id?: string
+          niu?: string | null
+          raison_sociale: string
+          telephone?: string | null
+          type: Database["public"]["Enums"]["tiers_type"]
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          adresse?: string | null
+          code?: string
+          compte_id?: string | null
+          created_at?: string
+          email?: string | null
+          entreprise_id?: string
+          id?: string
+          niu?: string | null
+          raison_sociale?: string
+          telephone?: string | null
+          type?: Database["public"]["Enums"]["tiers_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tiers_compte_id_fkey"
+            columns: ["compte_id"]
+            isOneToOne: false
+            referencedRelation: "comptes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tiers_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -247,6 +599,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      contrepasser_ecriture: {
+        Args: { _date?: string; _ecriture_id: string }
+        Returns: string
+      }
       create_entreprise_with_owner: {
         Args: {
           _devise?: string
@@ -281,13 +637,27 @@ export type Database = {
         Args: { _entreprise_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["membership_role"]
       }
+      next_ecriture_numero: {
+        Args: {
+          _entreprise_id: string
+          _exercice_id: string
+          _journal_id: string
+        }
+        Returns: number
+      }
+      seed_plan_ohada: { Args: { _entreprise_id: string }; Returns: undefined }
+      validate_ecriture: { Args: { _ecriture_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "super_admin"
+      compte_sens: "debit" | "credit" | "mixte"
+      ecriture_statut: "brouillon" | "validee" | "contrepassee"
       exercice_statut: "ouvert" | "cloture"
+      journal_type: "achats" | "ventes" | "banque" | "caisse" | "od" | "an"
       membership_role: "owner" | "admin" | "comptable" | "lecteur"
       regime_fiscal: "reel" | "simplifie" | "liberatoire" | "non_assujetti"
       subscription_status: "trial" | "actif" | "suspendu" | "expire"
+      tiers_type: "client" | "fournisseur" | "salarie" | "autre"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -416,10 +786,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["super_admin"],
+      compte_sens: ["debit", "credit", "mixte"],
+      ecriture_statut: ["brouillon", "validee", "contrepassee"],
       exercice_statut: ["ouvert", "cloture"],
+      journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],
       membership_role: ["owner", "admin", "comptable", "lecteur"],
       regime_fiscal: ["reel", "simplifie", "liberatoire", "non_assujetti"],
       subscription_status: ["trial", "actif", "suspendu", "expire"],
+      tiers_type: ["client", "fournisseur", "salarie", "autre"],
     },
   },
 } as const

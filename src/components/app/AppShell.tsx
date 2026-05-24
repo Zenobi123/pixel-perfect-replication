@@ -21,7 +21,7 @@ type NavItem = {
 
 const NAV: NavItem[] = [
   { to: "/app", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
-  { to: "/app/comptabilite", label: "Comptabilité", icon: BookOpen, soon: true },
+  { to: "/app/comptabilite/ecritures", label: "Comptabilité", icon: BookOpen },
   { to: "/app/ventes", label: "Ventes", icon: FileText, soon: true },
   { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet, soon: true },
   { to: "/app/tiers", label: "Tiers", icon: Users, soon: true },

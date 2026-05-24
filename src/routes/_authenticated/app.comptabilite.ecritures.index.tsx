@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatXAF, formatDate } from "@/lib/format";
 
-export const Route = createFileRoute("/_authenticated/app/comptabilite/ecritures")({
+export const Route = createFileRoute("/_authenticated/app/comptabilite/ecritures/")({
   component: EcrituresPage,
 });
 

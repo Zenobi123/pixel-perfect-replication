@@ -22,6 +22,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppComptabiliteRouteImport } from './routes/_authenticated/app.comptabilite'
+import { Route as AuthenticatedAppComptabiliteIndexRouteImport } from './routes/_authenticated/app.comptabilite.index'
+import { Route as AuthenticatedAppComptabilitePlanRouteImport } from './routes/_authenticated/app.comptabilite.plan'
+import { Route as AuthenticatedAppComptabiliteJournauxRouteImport } from './routes/_authenticated/app.comptabilite.journaux'
+import { Route as AuthenticatedAppComptabiliteEcrituresIndexRouteImport } from './routes/_authenticated/app.comptabilite.ecritures.index'
+import { Route as AuthenticatedAppComptabiliteEcrituresNouvelleRouteImport } from './routes/_authenticated/app.comptabilite.ecritures.nouvelle'
+import { Route as AuthenticatedAppComptabiliteEcrituresIdRouteImport } from './routes/_authenticated/app.comptabilite.ecritures.$id'
 
 const TarifsRoute = TarifsRouteImport.update({
   id: '/tarifs',
@@ -87,6 +94,48 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppComptabiliteRoute =
+  AuthenticatedAppComptabiliteRouteImport.update({
+    id: '/comptabilite',
+    path: '/comptabilite',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppComptabiliteIndexRoute =
+  AuthenticatedAppComptabiliteIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabilitePlanRoute =
+  AuthenticatedAppComptabilitePlanRouteImport.update({
+    id: '/plan',
+    path: '/plan',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabiliteJournauxRoute =
+  AuthenticatedAppComptabiliteJournauxRouteImport.update({
+    id: '/journaux',
+    path: '/journaux',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabiliteEcrituresIndexRoute =
+  AuthenticatedAppComptabiliteEcrituresIndexRouteImport.update({
+    id: '/ecritures/',
+    path: '/ecritures/',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabiliteEcrituresNouvelleRoute =
+  AuthenticatedAppComptabiliteEcrituresNouvelleRouteImport.update({
+    id: '/ecritures/nouvelle',
+    path: '/ecritures/nouvelle',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabiliteEcrituresIdRoute =
+  AuthenticatedAppComptabiliteEcrituresIdRouteImport.update({
+    id: '/ecritures/$id',
+    path: '/ecritures/$id',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -100,7 +149,14 @@ export interface FileRoutesByFullPath {
   '/tarifs': typeof TarifsRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
+  '/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
+  '/app/comptabilite/': typeof AuthenticatedAppComptabiliteIndexRoute
+  '/app/comptabilite/ecritures/$id': typeof AuthenticatedAppComptabiliteEcrituresIdRoute
+  '/app/comptabilite/ecritures/nouvelle': typeof AuthenticatedAppComptabiliteEcrituresNouvelleRoute
+  '/app/comptabilite/ecritures/': typeof AuthenticatedAppComptabiliteEcrituresIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -114,6 +170,12 @@ export interface FileRoutesByTo {
   '/tarifs': typeof TarifsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
+  '/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
+  '/app/comptabilite': typeof AuthenticatedAppComptabiliteIndexRoute
+  '/app/comptabilite/ecritures/$id': typeof AuthenticatedAppComptabiliteEcrituresIdRoute
+  '/app/comptabilite/ecritures/nouvelle': typeof AuthenticatedAppComptabiliteEcrituresNouvelleRoute
+  '/app/comptabilite/ecritures': typeof AuthenticatedAppComptabiliteEcrituresIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -129,7 +191,14 @@ export interface FileRoutesById {
   '/tarifs': typeof TarifsRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
+  '/_authenticated/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
+  '/_authenticated/app/comptabilite/': typeof AuthenticatedAppComptabiliteIndexRoute
+  '/_authenticated/app/comptabilite/ecritures/$id': typeof AuthenticatedAppComptabiliteEcrituresIdRoute
+  '/_authenticated/app/comptabilite/ecritures/nouvelle': typeof AuthenticatedAppComptabiliteEcrituresNouvelleRoute
+  '/_authenticated/app/comptabilite/ecritures/': typeof AuthenticatedAppComptabiliteEcrituresIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -145,7 +214,14 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/app'
     | '/onboarding'
+    | '/app/comptabilite'
     | '/app/'
+    | '/app/comptabilite/journaux'
+    | '/app/comptabilite/plan'
+    | '/app/comptabilite/'
+    | '/app/comptabilite/ecritures/$id'
+    | '/app/comptabilite/ecritures/nouvelle'
+    | '/app/comptabilite/ecritures/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -159,6 +235,12 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/onboarding'
     | '/app'
+    | '/app/comptabilite/journaux'
+    | '/app/comptabilite/plan'
+    | '/app/comptabilite'
+    | '/app/comptabilite/ecritures/$id'
+    | '/app/comptabilite/ecritures/nouvelle'
+    | '/app/comptabilite/ecritures'
   id:
     | '__root__'
     | '/'
@@ -173,7 +255,14 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/comptabilite'
     | '/_authenticated/app/'
+    | '/_authenticated/app/comptabilite/journaux'
+    | '/_authenticated/app/comptabilite/plan'
+    | '/_authenticated/app/comptabilite/'
+    | '/_authenticated/app/comptabilite/ecritures/$id'
+    | '/_authenticated/app/comptabilite/ecritures/nouvelle'
+    | '/_authenticated/app/comptabilite/ecritures/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -282,14 +371,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/comptabilite': {
+      id: '/_authenticated/app/comptabilite'
+      path: '/comptabilite'
+      fullPath: '/app/comptabilite'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/comptabilite/': {
+      id: '/_authenticated/app/comptabilite/'
+      path: '/'
+      fullPath: '/app/comptabilite/'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteIndexRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
+    '/_authenticated/app/comptabilite/plan': {
+      id: '/_authenticated/app/comptabilite/plan'
+      path: '/plan'
+      fullPath: '/app/comptabilite/plan'
+      preLoaderRoute: typeof AuthenticatedAppComptabilitePlanRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
+    '/_authenticated/app/comptabilite/journaux': {
+      id: '/_authenticated/app/comptabilite/journaux'
+      path: '/journaux'
+      fullPath: '/app/comptabilite/journaux'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteJournauxRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
+    '/_authenticated/app/comptabilite/ecritures/': {
+      id: '/_authenticated/app/comptabilite/ecritures/'
+      path: '/ecritures'
+      fullPath: '/app/comptabilite/ecritures/'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteEcrituresIndexRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
+    '/_authenticated/app/comptabilite/ecritures/nouvelle': {
+      id: '/_authenticated/app/comptabilite/ecritures/nouvelle'
+      path: '/ecritures/nouvelle'
+      fullPath: '/app/comptabilite/ecritures/nouvelle'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteEcrituresNouvelleRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
+    '/_authenticated/app/comptabilite/ecritures/$id': {
+      id: '/_authenticated/app/comptabilite/ecritures/$id'
+      path: '/ecritures/$id'
+      fullPath: '/app/comptabilite/ecritures/$id'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteEcrituresIdRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
   }
 }
 
+interface AuthenticatedAppComptabiliteRouteChildren {
+  AuthenticatedAppComptabiliteJournauxRoute: typeof AuthenticatedAppComptabiliteJournauxRoute
+  AuthenticatedAppComptabilitePlanRoute: typeof AuthenticatedAppComptabilitePlanRoute
+  AuthenticatedAppComptabiliteIndexRoute: typeof AuthenticatedAppComptabiliteIndexRoute
+  AuthenticatedAppComptabiliteEcrituresIdRoute: typeof AuthenticatedAppComptabiliteEcrituresIdRoute
+  AuthenticatedAppComptabiliteEcrituresNouvelleRoute: typeof AuthenticatedAppComptabiliteEcrituresNouvelleRoute
+  AuthenticatedAppComptabiliteEcrituresIndexRoute: typeof AuthenticatedAppComptabiliteEcrituresIndexRoute
+}
+
+const AuthenticatedAppComptabiliteRouteChildren: AuthenticatedAppComptabiliteRouteChildren =
+  {
+    AuthenticatedAppComptabiliteJournauxRoute:
+      AuthenticatedAppComptabiliteJournauxRoute,
+    AuthenticatedAppComptabilitePlanRoute:
+      AuthenticatedAppComptabilitePlanRoute,
+    AuthenticatedAppComptabiliteIndexRoute:
+      AuthenticatedAppComptabiliteIndexRoute,
+    AuthenticatedAppComptabiliteEcrituresIdRoute:
+      AuthenticatedAppComptabiliteEcrituresIdRoute,
+    AuthenticatedAppComptabiliteEcrituresNouvelleRoute:
+      AuthenticatedAppComptabiliteEcrituresNouvelleRoute,
+    AuthenticatedAppComptabiliteEcrituresIndexRoute:
+      AuthenticatedAppComptabiliteEcrituresIndexRoute,
+  }
+
+const AuthenticatedAppComptabiliteRouteWithChildren =
+  AuthenticatedAppComptabiliteRoute._addFileChildren(
+    AuthenticatedAppComptabiliteRouteChildren,
+  )
+
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppComptabiliteRoute: typeof AuthenticatedAppComptabiliteRouteWithChildren
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppComptabiliteRoute:
+    AuthenticatedAppComptabiliteRouteWithChildren,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
 }
 

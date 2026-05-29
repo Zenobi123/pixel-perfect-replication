@@ -139,6 +139,60 @@ export type Database = {
         }
         Relationships: []
       }
+      documents: {
+        Row: {
+          chemin: string
+          created_at: string
+          created_by: string
+          ecriture_id: string | null
+          entreprise_id: string
+          id: string
+          mime: string | null
+          nom_fichier: string
+          taille: number | null
+          type: Database["public"]["Enums"]["document_type"]
+        }
+        Insert: {
+          chemin: string
+          created_at?: string
+          created_by?: string
+          ecriture_id?: string | null
+          entreprise_id: string
+          id?: string
+          mime?: string | null
+          nom_fichier: string
+          taille?: number | null
+          type?: Database["public"]["Enums"]["document_type"]
+        }
+        Update: {
+          chemin?: string
+          created_at?: string
+          created_by?: string
+          ecriture_id?: string | null
+          entreprise_id?: string
+          id?: string
+          mime?: string | null
+          nom_fichier?: string
+          taille?: number | null
+          type?: Database["public"]["Enums"]["document_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_ecriture_id_fkey"
+            columns: ["ecriture_id"]
+            isOneToOne: false
+            referencedRelation: "ecritures"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ecritures: {
         Row: {
           contrepasse_par: string | null
@@ -707,6 +761,16 @@ export type Database = {
     Enums: {
       app_role: "super_admin"
       compte_sens: "debit" | "credit" | "mixte"
+      document_type:
+        | "facture_client"
+        | "facture_fournisseur"
+        | "recu"
+        | "releve_bancaire"
+        | "contrat"
+        | "declaration"
+        | "quittance"
+        | "document_social"
+        | "autre"
       ecriture_statut: "brouillon" | "validee" | "contrepassee"
       exercice_statut: "ouvert" | "cloture"
       journal_type: "achats" | "ventes" | "banque" | "caisse" | "od" | "an"
@@ -844,6 +908,17 @@ export const Constants = {
     Enums: {
       app_role: ["super_admin"],
       compte_sens: ["debit", "credit", "mixte"],
+      document_type: [
+        "facture_client",
+        "facture_fournisseur",
+        "recu",
+        "releve_bancaire",
+        "contrat",
+        "declaration",
+        "quittance",
+        "document_social",
+        "autre",
+      ],
       ecriture_statut: ["brouillon", "validee", "contrepassee"],
       exercice_statut: ["ouvert", "cloture"],
       journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],

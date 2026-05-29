@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEntreprises } from "@/hooks/use-entreprises";
 import { EcritureForm } from "@/components/app/EcritureForm";
+import { PiecesJointes } from "@/components/app/PiecesJointes";
 
 export const Route = createFileRoute("/_authenticated/app/comptabilite/ecritures/$id")({
   component: EcritureDetail,
@@ -59,6 +60,7 @@ function EcritureDetail() {
         }}
         initialLignes={lignes}
       />
+      <PiecesJointes entrepriseId={current.id} ecritureId={data.id} />
     </div>
   );
 }

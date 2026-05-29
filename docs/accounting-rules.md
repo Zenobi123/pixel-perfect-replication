@@ -61,6 +61,24 @@ Le trigger `trg_ecritures_periode` (`check_periode_ouverte`) **bloque toute
 création ou modification d'écriture** dont la date tombe dans une période
 `verrouillee` ou `cloturee` — la validation et la contrepassation comprises.
 
+## Pièces justificatives (stockage privé)
+
+Migration : `supabase/migrations/20260529160000_documents_pieces_justificatives.sql`.
+
+- Bucket `pieces` créé **privé** (les buckets sont publics par défaut sur
+  Lovable/Supabase), avec limite de taille (10 Mo) et types autorisés
+  (PDF, PNG, JPEG, WebP).
+- Table `documents` (scopée par `entreprise_id`, liée à une écriture), RLS par
+  membership.
+- **RLS sur `storage.objects`** : un objet n'est lisible/déposable/supprimable
+  que si le 1ᵉʳ segment du chemin (`entreprise_id/…`) correspond à une
+  entreprise dont l'utilisateur est membre — isolation physique par tenant.
+- L'accès aux fichiers se fait par **URL signée à durée de vie courte (60 s)**
+  générée à la volée ; aucune clé secrète côté frontend, aucun objet public.
+
+Frontend : `src/components/app/PiecesJointes.tsx`, intégré à la page détail
+d'une écriture.
+
 ## Restitutions
 
 Les états (journal général, grand livre, balance générale) sont calculés à

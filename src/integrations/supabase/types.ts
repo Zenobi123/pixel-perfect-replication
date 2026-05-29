@@ -281,6 +281,72 @@ export type Database = {
           },
         ]
       }
+      declarations_fiscales: {
+        Row: {
+          code_impot: string
+          created_at: string
+          created_by: string
+          date_echeance: string
+          entreprise_id: string
+          exercice_id: string | null
+          id: string
+          libelle: string
+          montant: number | null
+          notes: string | null
+          periode: string | null
+          reference: string | null
+          statut: Database["public"]["Enums"]["declaration_statut"]
+          updated_at: string
+        }
+        Insert: {
+          code_impot: string
+          created_at?: string
+          created_by?: string
+          date_echeance: string
+          entreprise_id: string
+          exercice_id?: string | null
+          id?: string
+          libelle: string
+          montant?: number | null
+          notes?: string | null
+          periode?: string | null
+          reference?: string | null
+          statut?: Database["public"]["Enums"]["declaration_statut"]
+          updated_at?: string
+        }
+        Update: {
+          code_impot?: string
+          created_at?: string
+          created_by?: string
+          date_echeance?: string
+          entreprise_id?: string
+          exercice_id?: string | null
+          id?: string
+          libelle?: string
+          montant?: number | null
+          notes?: string | null
+          periode?: string | null
+          reference?: string | null
+          statut?: Database["public"]["Enums"]["declaration_statut"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "declarations_fiscales_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "declarations_fiscales_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           chemin: string
@@ -1146,6 +1212,10 @@ export type Database = {
         Args: { _facture_id: string; _montant: number }
         Returns: undefined
       }
+      generer_echeances_tva: {
+        Args: { _exercice_id: string; _jour?: number }
+        Returns: number
+      }
       generer_periodes: { Args: { _exercice_id: string }; Returns: number }
       has_membership_role: {
         Args: {
@@ -1195,6 +1265,13 @@ export type Database = {
         | "annulee"
       app_role: "super_admin"
       compte_sens: "debit" | "credit" | "mixte"
+      declaration_statut:
+        | "a_preparer"
+        | "en_revue"
+        | "validee"
+        | "deposee"
+        | "payee"
+        | "archivee"
       document_type:
         | "facture_client"
         | "facture_fournisseur"
@@ -1359,6 +1436,14 @@ export const Constants = {
       ],
       app_role: ["super_admin"],
       compte_sens: ["debit", "credit", "mixte"],
+      declaration_statut: [
+        "a_preparer",
+        "en_revue",
+        "validee",
+        "deposee",
+        "payee",
+        "archivee",
+      ],
       document_type: [
         "facture_client",
         "facture_fournisseur",

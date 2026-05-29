@@ -10,6 +10,7 @@ import {
   Building2,
   Archive,
   ShoppingCart,
+  Landmark,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,6 +41,7 @@ const NAV: NavItem[] = [
   { to: "/app/ventes", label: "Ventes", icon: FileText },
   { to: "/app/achats", label: "Achats", icon: ShoppingCart },
   { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet },
+  { to: "/app/fiscalite", label: "Fiscalité", icon: Landmark },
   { to: "/app/tiers", label: "Tiers", icon: Users },
   { to: "/app/export", label: "Sauvegarde", icon: Archive },
   { to: "/app/parametres", label: "Paramètres", icon: Settings, soon: true },

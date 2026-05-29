@@ -1,12 +1,27 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LogOut, LayoutDashboard, BookOpen, FileText, Wallet, Users, Settings, Building2 } from "lucide-react";
+import {
+  LogOut,
+  LayoutDashboard,
+  BookOpen,
+  FileText,
+  Wallet,
+  Users,
+  Settings,
+  Building2,
+  Archive,
+  ShoppingCart,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useEntreprises } from "@/hooks/use-entreprises";
 import { Button } from "@/components/ui/button";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import type { ReactNode } from "react";
@@ -22,9 +37,11 @@ type NavItem = {
 const NAV: NavItem[] = [
   { to: "/app", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
   { to: "/app/comptabilite/ecritures", label: "Comptabilité", icon: BookOpen },
-  { to: "/app/ventes", label: "Ventes", icon: FileText, soon: true },
+  { to: "/app/ventes", label: "Ventes", icon: FileText },
+  { to: "/app/achats", label: "Achats", icon: ShoppingCart },
   { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet, soon: true },
-  { to: "/app/tiers", label: "Tiers", icon: Users, soon: true },
+  { to: "/app/tiers", label: "Tiers", icon: Users },
+  { to: "/app/export", label: "Sauvegarde", icon: Archive },
   { to: "/app/parametres", label: "Paramètres", icon: Settings, soon: true },
 ];
 
@@ -42,7 +59,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-muted/30">
       <aside className="hidden md:flex w-64 shrink-0 flex-col border-r bg-card">
         <div className="p-4 border-b">
-          <Link to={"/app" as never} className="text-xl font-bold tracking-tight">Kompta</Link>
+          <Link to={"/app" as never} className="text-xl font-bold tracking-tight">
+            Kompta
+          </Link>
         </div>
 
         <div className="p-3 border-b space-y-2">
@@ -51,15 +70,22 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           {entreprises.length > 0 ? (
             <Select value={current?.id ?? ""} onValueChange={setCurrent}>
-              <SelectTrigger><SelectValue placeholder="Choisir…" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Choisir…" />
+              </SelectTrigger>
               <SelectContent>
                 {entreprises.map((e) => (
-                  <SelectItem key={e.id} value={e.id}>{e.raison_sociale}</SelectItem>
+                  <SelectItem key={e.id} value={e.id}>
+                    {e.raison_sociale}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           ) : (
-            <Link to={"/onboarding" as never} className="block text-sm text-primary hover:underline">
+            <Link
+              to={"/onboarding" as never}
+              className="block text-sm text-primary hover:underline"
+            >
               + Créer une entreprise
             </Link>
           )}
@@ -76,7 +102,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 >
                   <Icon className="h-4 w-4" />
                   <span className="flex-1">{item.label}</span>
-                  <Badge variant="outline" className="text-[10px] px-1">bientôt</Badge>
+                  <Badge variant="outline" className="text-[10px] px-1">
+                    bientôt
+                  </Badge>
                 </div>
               );
             }
@@ -102,9 +130,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0">
-        {children}
-      </main>
+      <main className="flex-1 min-w-0">{children}</main>
     </div>
   );
 }

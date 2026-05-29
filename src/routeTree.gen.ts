@@ -21,12 +21,22 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppTiersRouteImport } from './routes/_authenticated/app.tiers'
+import { Route as AuthenticatedAppAchatsIndexRouteImport } from './routes/_authenticated/app.achats.index'
+import { Route as AuthenticatedAppAchatsNouvelleRouteImport } from './routes/_authenticated/app.achats.nouvelle'
+import { Route as AuthenticatedAppAchatsIdRouteImport } from './routes/_authenticated/app.achats.$id'
+import { Route as AuthenticatedAppVentesIndexRouteImport } from './routes/_authenticated/app.ventes.index'
+import { Route as AuthenticatedAppVentesNouvelleRouteImport } from './routes/_authenticated/app.ventes.nouvelle'
+import { Route as AuthenticatedAppVentesIdRouteImport } from './routes/_authenticated/app.ventes.$id'
+import { Route as AuthenticatedAppExportRouteImport } from './routes/_authenticated/app.export'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppComptabiliteRouteImport } from './routes/_authenticated/app.comptabilite'
 import { Route as AuthenticatedAppComptabiliteIndexRouteImport } from './routes/_authenticated/app.comptabilite.index'
 import { Route as AuthenticatedAppComptabilitePlanRouteImport } from './routes/_authenticated/app.comptabilite.plan'
 import { Route as AuthenticatedAppComptabiliteJournalRouteImport } from './routes/_authenticated/app.comptabilite.journal'
 import { Route as AuthenticatedAppComptabiliteGrandLivreRouteImport } from './routes/_authenticated/app.comptabilite.grand-livre'
+import { Route as AuthenticatedAppComptabilitePeriodesRouteImport } from './routes/_authenticated/app.comptabilite.periodes'
+import { Route as AuthenticatedAppComptabiliteBalanceAuxiliaireRouteImport } from './routes/_authenticated/app.comptabilite.balance-auxiliaire'
 import { Route as AuthenticatedAppComptabiliteBalanceRouteImport } from './routes/_authenticated/app.comptabilite.balance'
 import { Route as AuthenticatedAppComptabiliteJournauxRouteImport } from './routes/_authenticated/app.comptabilite.journaux'
 import { Route as AuthenticatedAppComptabiliteEcrituresIndexRouteImport } from './routes/_authenticated/app.comptabilite.ecritures.index'
@@ -92,6 +102,54 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAppTiersRoute = AuthenticatedAppTiersRouteImport.update({
+  id: '/tiers',
+  path: '/tiers',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppAchatsIndexRoute =
+  AuthenticatedAppAchatsIndexRouteImport.update({
+    id: '/achats/',
+    path: '/achats/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAchatsNouvelleRoute =
+  AuthenticatedAppAchatsNouvelleRouteImport.update({
+    id: '/achats/nouvelle',
+    path: '/achats/nouvelle',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAchatsIdRoute = AuthenticatedAppAchatsIdRouteImport.update(
+  {
+    id: '/achats/$id',
+    path: '/achats/$id',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any,
+)
+const AuthenticatedAppVentesIndexRoute =
+  AuthenticatedAppVentesIndexRouteImport.update({
+    id: '/ventes/',
+    path: '/ventes/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppVentesNouvelleRoute =
+  AuthenticatedAppVentesNouvelleRouteImport.update({
+    id: '/ventes/nouvelle',
+    path: '/ventes/nouvelle',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppVentesIdRoute = AuthenticatedAppVentesIdRouteImport.update(
+  {
+    id: '/ventes/$id',
+    path: '/ventes/$id',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any,
+)
+const AuthenticatedAppExportRoute = AuthenticatedAppExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -125,6 +183,18 @@ const AuthenticatedAppComptabiliteGrandLivreRoute =
   AuthenticatedAppComptabiliteGrandLivreRouteImport.update({
     id: '/grand-livre',
     path: '/grand-livre',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabilitePeriodesRoute =
+  AuthenticatedAppComptabilitePeriodesRouteImport.update({
+    id: '/periodes',
+    path: '/periodes',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
+const AuthenticatedAppComptabiliteBalanceAuxiliaireRoute =
+  AuthenticatedAppComptabiliteBalanceAuxiliaireRouteImport.update({
+    id: '/balance-auxiliaire',
+    path: '/balance-auxiliaire',
     getParentRoute: () => AuthenticatedAppComptabiliteRoute,
   } as any)
 const AuthenticatedAppComptabiliteBalanceRoute =
@@ -170,11 +240,21 @@ export interface FileRoutesByFullPath {
   '/tarifs': typeof TarifsRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/tiers': typeof AuthenticatedAppTiersRoute
+  '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
+  '/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
+  '/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
+  '/app/achats/': typeof AuthenticatedAppAchatsIndexRoute
+  '/app/ventes/nouvelle': typeof AuthenticatedAppVentesNouvelleRoute
+  '/app/ventes/$id': typeof AuthenticatedAppVentesIdRoute
+  '/app/ventes/': typeof AuthenticatedAppVentesIndexRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
+  '/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
+  '/app/comptabilite/periodes': typeof AuthenticatedAppComptabilitePeriodesRoute
   '/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
   '/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
   '/app/comptabilite/': typeof AuthenticatedAppComptabiliteIndexRoute
@@ -194,15 +274,25 @@ export interface FileRoutesByTo {
   '/tarifs': typeof TarifsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/tiers': typeof AuthenticatedAppTiersRoute
+  '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
+  '/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
+  '/app/comptabilite/periodes': typeof AuthenticatedAppComptabilitePeriodesRoute
   '/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
   '/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteIndexRoute
   '/app/comptabilite/ecritures/$id': typeof AuthenticatedAppComptabiliteEcrituresIdRoute
   '/app/comptabilite/ecritures/nouvelle': typeof AuthenticatedAppComptabiliteEcrituresNouvelleRoute
   '/app/comptabilite/ecritures': typeof AuthenticatedAppComptabiliteEcrituresIndexRoute
+  '/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
+  '/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
+  '/app/achats': typeof AuthenticatedAppAchatsIndexRoute
+  '/app/ventes/nouvelle': typeof AuthenticatedAppVentesNouvelleRoute
+  '/app/ventes/$id': typeof AuthenticatedAppVentesIdRoute
+  '/app/ventes': typeof AuthenticatedAppVentesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -218,11 +308,21 @@ export interface FileRoutesById {
   '/tarifs': typeof TarifsRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/tiers': typeof AuthenticatedAppTiersRoute
+  '/_authenticated/app/achats/': typeof AuthenticatedAppAchatsIndexRoute
+  '/_authenticated/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
+  '/_authenticated/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
+  '/_authenticated/app/ventes/': typeof AuthenticatedAppVentesIndexRoute
+  '/_authenticated/app/ventes/nouvelle': typeof AuthenticatedAppVentesNouvelleRoute
+  '/_authenticated/app/ventes/$id': typeof AuthenticatedAppVentesIdRoute
+  '/_authenticated/app/export': typeof AuthenticatedAppExportRoute
   '/_authenticated/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
+  '/_authenticated/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   '/_authenticated/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/_authenticated/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
+  '/_authenticated/app/comptabilite/periodes': typeof AuthenticatedAppComptabilitePeriodesRoute
   '/_authenticated/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
   '/_authenticated/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
   '/_authenticated/app/comptabilite/': typeof AuthenticatedAppComptabiliteIndexRoute
@@ -244,17 +344,27 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/app'
     | '/onboarding'
+    | '/app/tiers'
+    | '/app/export'
     | '/app/comptabilite'
     | '/app/'
     | '/app/comptabilite/balance'
+    | '/app/comptabilite/balance-auxiliaire'
     | '/app/comptabilite/grand-livre'
     | '/app/comptabilite/journal'
+    | '/app/comptabilite/periodes'
     | '/app/comptabilite/journaux'
     | '/app/comptabilite/plan'
     | '/app/comptabilite/'
     | '/app/comptabilite/ecritures/$id'
     | '/app/comptabilite/ecritures/nouvelle'
     | '/app/comptabilite/ecritures/'
+    | '/app/achats/nouvelle'
+    | '/app/achats/$id'
+    | '/app/achats/'
+    | '/app/ventes/nouvelle'
+    | '/app/ventes/$id'
+    | '/app/ventes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -268,15 +378,25 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/onboarding'
     | '/app'
+    | '/app/tiers'
+    | '/app/export'
     | '/app/comptabilite/balance'
+    | '/app/comptabilite/balance-auxiliaire'
     | '/app/comptabilite/grand-livre'
     | '/app/comptabilite/journal'
+    | '/app/comptabilite/periodes'
     | '/app/comptabilite/journaux'
     | '/app/comptabilite/plan'
     | '/app/comptabilite'
     | '/app/comptabilite/ecritures/$id'
     | '/app/comptabilite/ecritures/nouvelle'
     | '/app/comptabilite/ecritures'
+    | '/app/achats/nouvelle'
+    | '/app/achats/$id'
+    | '/app/achats'
+    | '/app/ventes/nouvelle'
+    | '/app/ventes/$id'
+    | '/app/ventes'
   id:
     | '__root__'
     | '/'
@@ -291,17 +411,27 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/tiers'
+    | '/_authenticated/app/export'
     | '/_authenticated/app/comptabilite'
     | '/_authenticated/app/'
     | '/_authenticated/app/comptabilite/balance'
+    | '/_authenticated/app/comptabilite/balance-auxiliaire'
     | '/_authenticated/app/comptabilite/grand-livre'
     | '/_authenticated/app/comptabilite/journal'
+    | '/_authenticated/app/comptabilite/periodes'
     | '/_authenticated/app/comptabilite/journaux'
     | '/_authenticated/app/comptabilite/plan'
     | '/_authenticated/app/comptabilite/'
     | '/_authenticated/app/comptabilite/ecritures/$id'
     | '/_authenticated/app/comptabilite/ecritures/nouvelle'
     | '/_authenticated/app/comptabilite/ecritures/'
+    | '/_authenticated/app/achats/'
+    | '/_authenticated/app/achats/nouvelle'
+    | '/_authenticated/app/achats/$id'
+    | '/_authenticated/app/ventes/'
+    | '/_authenticated/app/ventes/nouvelle'
+    | '/_authenticated/app/ventes/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -410,6 +540,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/tiers': {
+      id: '/_authenticated/app/tiers'
+      path: '/tiers'
+      fullPath: '/app/tiers'
+      preLoaderRoute: typeof AuthenticatedAppTiersRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/export': {
+      id: '/_authenticated/app/export'
+      path: '/export'
+      fullPath: '/app/export'
+      preLoaderRoute: typeof AuthenticatedAppExportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/achats/': {
+      id: '/_authenticated/app/achats/'
+      path: '/achats'
+      fullPath: '/app/achats'
+      preLoaderRoute: typeof AuthenticatedAppAchatsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/achats/nouvelle': {
+      id: '/_authenticated/app/achats/nouvelle'
+      path: '/achats/nouvelle'
+      fullPath: '/app/achats/nouvelle'
+      preLoaderRoute: typeof AuthenticatedAppAchatsNouvelleRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/achats/$id': {
+      id: '/_authenticated/app/achats/$id'
+      path: '/achats/$id'
+      fullPath: '/app/achats/$id'
+      preLoaderRoute: typeof AuthenticatedAppAchatsIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/ventes/': {
+      id: '/_authenticated/app/ventes/'
+      path: '/ventes'
+      fullPath: '/app/ventes'
+      preLoaderRoute: typeof AuthenticatedAppVentesIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/ventes/nouvelle': {
+      id: '/_authenticated/app/ventes/nouvelle'
+      path: '/ventes/nouvelle'
+      fullPath: '/app/ventes/nouvelle'
+      preLoaderRoute: typeof AuthenticatedAppVentesNouvelleRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/ventes/$id': {
+      id: '/_authenticated/app/ventes/$id'
+      path: '/ventes/$id'
+      fullPath: '/app/ventes/$id'
+      preLoaderRoute: typeof AuthenticatedAppVentesIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/comptabilite': {
       id: '/_authenticated/app/comptabilite'
       path: '/comptabilite'
@@ -459,6 +645,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppComptabiliteBalanceRouteImport
       parentRoute: typeof AuthenticatedAppComptabiliteRoute
     }
+    '/_authenticated/app/comptabilite/balance-auxiliaire': {
+      id: '/_authenticated/app/comptabilite/balance-auxiliaire'
+      path: '/balance-auxiliaire'
+      fullPath: '/app/comptabilite/balance-auxiliaire'
+      preLoaderRoute: typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
+    '/_authenticated/app/comptabilite/periodes': {
+      id: '/_authenticated/app/comptabilite/periodes'
+      path: '/periodes'
+      fullPath: '/app/comptabilite/periodes'
+      preLoaderRoute: typeof AuthenticatedAppComptabilitePeriodesRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
     '/_authenticated/app/comptabilite/ecritures/': {
       id: '/_authenticated/app/comptabilite/ecritures/'
       path: '/ecritures'
@@ -484,6 +684,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAppComptabiliteRouteChildren {
+  AuthenticatedAppComptabilitePeriodesRoute: typeof AuthenticatedAppComptabilitePeriodesRoute
+  AuthenticatedAppComptabiliteBalanceAuxiliaireRoute: typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   AuthenticatedAppComptabiliteBalanceRoute: typeof AuthenticatedAppComptabiliteBalanceRoute
   AuthenticatedAppComptabiliteGrandLivreRoute: typeof AuthenticatedAppComptabiliteGrandLivreRoute
   AuthenticatedAppComptabiliteJournalRoute: typeof AuthenticatedAppComptabiliteJournalRoute
@@ -497,6 +699,10 @@ interface AuthenticatedAppComptabiliteRouteChildren {
 
 const AuthenticatedAppComptabiliteRouteChildren: AuthenticatedAppComptabiliteRouteChildren =
   {
+    AuthenticatedAppComptabilitePeriodesRoute:
+      AuthenticatedAppComptabilitePeriodesRoute,
+    AuthenticatedAppComptabiliteBalanceAuxiliaireRoute:
+      AuthenticatedAppComptabiliteBalanceAuxiliaireRoute,
     AuthenticatedAppComptabiliteBalanceRoute:
       AuthenticatedAppComptabiliteBalanceRoute,
     AuthenticatedAppComptabiliteGrandLivreRoute:
@@ -523,14 +729,30 @@ const AuthenticatedAppComptabiliteRouteWithChildren =
   )
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppTiersRoute: typeof AuthenticatedAppTiersRoute
+  AuthenticatedAppExportRoute: typeof AuthenticatedAppExportRoute
   AuthenticatedAppComptabiliteRoute: typeof AuthenticatedAppComptabiliteRouteWithChildren
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppAchatsIndexRoute: typeof AuthenticatedAppAchatsIndexRoute
+  AuthenticatedAppAchatsNouvelleRoute: typeof AuthenticatedAppAchatsNouvelleRoute
+  AuthenticatedAppAchatsIdRoute: typeof AuthenticatedAppAchatsIdRoute
+  AuthenticatedAppVentesIndexRoute: typeof AuthenticatedAppVentesIndexRoute
+  AuthenticatedAppVentesNouvelleRoute: typeof AuthenticatedAppVentesNouvelleRoute
+  AuthenticatedAppVentesIdRoute: typeof AuthenticatedAppVentesIdRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppTiersRoute: AuthenticatedAppTiersRoute,
+  AuthenticatedAppExportRoute: AuthenticatedAppExportRoute,
   AuthenticatedAppComptabiliteRoute:
     AuthenticatedAppComptabiliteRouteWithChildren,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppAchatsIndexRoute: AuthenticatedAppAchatsIndexRoute,
+  AuthenticatedAppAchatsNouvelleRoute: AuthenticatedAppAchatsNouvelleRoute,
+  AuthenticatedAppAchatsIdRoute: AuthenticatedAppAchatsIdRoute,
+  AuthenticatedAppVentesIndexRoute: AuthenticatedAppVentesIndexRoute,
+  AuthenticatedAppVentesNouvelleRoute: AuthenticatedAppVentesNouvelleRoute,
+  AuthenticatedAppVentesIdRoute: AuthenticatedAppVentesIdRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =

@@ -94,6 +94,12 @@ Migration : `supabase/migrations/20260529160000_documents_pieces_justificatives.
 Frontend : `src/components/app/PiecesJointes.tsx`, intégré à la page détail
 d'une écriture.
 
+## Tests de non-régression
+
+Le jeu d'écritures « golden » (cycle achats-ventes-trésorerie aux états figés)
+verrouille la justesse comptable : voir [`golden-tests.md`](./golden-tests.md)
+et `supabase/tests/golden_ecritures.sql`.
+
 ## Restitutions
 
 Les états (journal général, grand livre, balance générale) sont calculés à

@@ -230,6 +230,57 @@ export type Database = {
         }
         Relationships: []
       }
+      comptes_tresorerie: {
+        Row: {
+          actif: boolean
+          compte_id: string
+          created_at: string
+          entreprise_id: string
+          id: string
+          libelle: string
+          solde_initial: number
+          type: Database["public"]["Enums"]["tresorerie_type"]
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          compte_id: string
+          created_at?: string
+          entreprise_id: string
+          id?: string
+          libelle: string
+          solde_initial?: number
+          type?: Database["public"]["Enums"]["tresorerie_type"]
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          compte_id?: string
+          created_at?: string
+          entreprise_id?: string
+          id?: string
+          libelle?: string
+          solde_initial?: number
+          type?: Database["public"]["Enums"]["tresorerie_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comptes_tresorerie_compte_id_fkey"
+            columns: ["compte_id"]
+            isOneToOne: false
+            referencedRelation: "comptes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comptes_tresorerie_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           chemin: string
@@ -816,6 +867,72 @@ export type Database = {
           },
         ]
       }
+      mouvements_tresorerie: {
+        Row: {
+          compte_tresorerie_dest_id: string | null
+          compte_tresorerie_id: string
+          contrepartie_compte_id: string | null
+          created_at: string
+          created_by: string
+          date_mouvement: string
+          ecriture_id: string | null
+          entreprise_id: string
+          exercice_id: string
+          id: string
+          libelle: string
+          montant: number
+          tiers_id: string | null
+          type: Database["public"]["Enums"]["mouvement_tresorerie_type"]
+        }
+        Insert: {
+          compte_tresorerie_dest_id?: string | null
+          compte_tresorerie_id: string
+          contrepartie_compte_id?: string | null
+          created_at?: string
+          created_by?: string
+          date_mouvement?: string
+          ecriture_id?: string | null
+          entreprise_id: string
+          exercice_id: string
+          id?: string
+          libelle: string
+          montant: number
+          tiers_id?: string | null
+          type: Database["public"]["Enums"]["mouvement_tresorerie_type"]
+        }
+        Update: {
+          compte_tresorerie_dest_id?: string | null
+          compte_tresorerie_id?: string
+          contrepartie_compte_id?: string | null
+          created_at?: string
+          created_by?: string
+          date_mouvement?: string
+          ecriture_id?: string | null
+          entreprise_id?: string
+          exercice_id?: string
+          id?: string
+          libelle?: string
+          montant?: number
+          tiers_id?: string | null
+          type?: Database["public"]["Enums"]["mouvement_tresorerie_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mouvements_tresorerie_compte_tresorerie_id_fkey"
+            columns: ["compte_tresorerie_id"]
+            isOneToOne: false
+            referencedRelation: "comptes_tresorerie"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mouvements_tresorerie_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       periodes: {
         Row: {
           created_at: string
@@ -1007,6 +1124,20 @@ export type Database = {
         }
         Returns: string
       }
+      enregistrer_mouvement_tresorerie: {
+        Args: {
+          _compte_tresorerie_dest_id?: string
+          _compte_tresorerie_id: string
+          _contrepartie_compte_id?: string
+          _date: string
+          _exercice_id: string
+          _libelle: string
+          _montant: number
+          _tiers_id?: string
+          _type: Database["public"]["Enums"]["mouvement_tresorerie_type"]
+        }
+        Returns: string
+      }
       enregistrer_paiement_achat: {
         Args: { _achat_id: string; _montant: number }
         Returns: undefined
@@ -1086,10 +1217,12 @@ export type Database = {
       facture_type: "devis" | "facture" | "avoir"
       journal_type: "achats" | "ventes" | "banque" | "caisse" | "od" | "an"
       membership_role: "owner" | "admin" | "comptable" | "lecteur"
+      mouvement_tresorerie_type: "encaissement" | "decaissement" | "transfert"
       periode_statut: "ouverte" | "en_revue" | "verrouillee" | "cloturee"
       regime_fiscal: "reel" | "simplifie" | "liberatoire" | "non_assujetti"
       subscription_status: "trial" | "actif" | "suspendu" | "expire"
       tiers_type: "client" | "fournisseur" | "salarie" | "autre"
+      tresorerie_type: "banque" | "caisse" | "mobile_money" | "autre"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1250,10 +1383,12 @@ export const Constants = {
       exercice_statut: ["ouvert", "cloture"],
       journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],
       membership_role: ["owner", "admin", "comptable", "lecteur"],
+      mouvement_tresorerie_type: ["encaissement", "decaissement", "transfert"],
       periode_statut: ["ouverte", "en_revue", "verrouillee", "cloturee"],
       regime_fiscal: ["reel", "simplifie", "liberatoire", "non_assujetti"],
       subscription_status: ["trial", "actif", "suspendu", "expire"],
       tiers_type: ["client", "fournisseur", "salarie", "autre"],
+      tresorerie_type: ["banque", "caisse", "mobile_money", "autre"],
     },
   },
 } as const

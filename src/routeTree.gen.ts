@@ -22,6 +22,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppTiersRouteImport } from './routes/_authenticated/app.tiers'
+import { Route as AuthenticatedAppTresorerieIndexRouteImport } from './routes/_authenticated/app.tresorerie.index'
+import { Route as AuthenticatedAppTresorerieIdRouteImport } from './routes/_authenticated/app.tresorerie.$id'
 import { Route as AuthenticatedAppAchatsIndexRouteImport } from './routes/_authenticated/app.achats.index'
 import { Route as AuthenticatedAppAchatsNouvelleRouteImport } from './routes/_authenticated/app.achats.nouvelle'
 import { Route as AuthenticatedAppAchatsIdRouteImport } from './routes/_authenticated/app.achats.$id'
@@ -107,6 +109,18 @@ const AuthenticatedAppTiersRoute = AuthenticatedAppTiersRouteImport.update({
   path: '/tiers',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppTresorerieIndexRoute =
+  AuthenticatedAppTresorerieIndexRouteImport.update({
+    id: '/tresorerie/',
+    path: '/tresorerie/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppTresorerieIdRoute =
+  AuthenticatedAppTresorerieIdRouteImport.update({
+    id: '/tresorerie/$id',
+    path: '/tresorerie/$id',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppAchatsIndexRoute =
   AuthenticatedAppAchatsIndexRouteImport.update({
     id: '/achats/',
@@ -243,6 +257,8 @@ export interface FileRoutesByFullPath {
   '/app/tiers': typeof AuthenticatedAppTiersRoute
   '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
+  '/app/tresorerie/$id': typeof AuthenticatedAppTresorerieIdRoute
+  '/app/tresorerie/': typeof AuthenticatedAppTresorerieIndexRoute
   '/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
   '/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
   '/app/achats/': typeof AuthenticatedAppAchatsIndexRoute
@@ -293,6 +309,8 @@ export interface FileRoutesByTo {
   '/app/ventes/nouvelle': typeof AuthenticatedAppVentesNouvelleRoute
   '/app/ventes/$id': typeof AuthenticatedAppVentesIdRoute
   '/app/ventes': typeof AuthenticatedAppVentesIndexRoute
+  '/app/tresorerie/$id': typeof AuthenticatedAppTresorerieIdRoute
+  '/app/tresorerie': typeof AuthenticatedAppTresorerieIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -315,6 +333,8 @@ export interface FileRoutesById {
   '/_authenticated/app/ventes/': typeof AuthenticatedAppVentesIndexRoute
   '/_authenticated/app/ventes/nouvelle': typeof AuthenticatedAppVentesNouvelleRoute
   '/_authenticated/app/ventes/$id': typeof AuthenticatedAppVentesIdRoute
+  '/_authenticated/app/tresorerie/': typeof AuthenticatedAppTresorerieIndexRoute
+  '/_authenticated/app/tresorerie/$id': typeof AuthenticatedAppTresorerieIdRoute
   '/_authenticated/app/export': typeof AuthenticatedAppExportRoute
   '/_authenticated/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
@@ -365,6 +385,8 @@ export interface FileRouteTypes {
     | '/app/ventes/nouvelle'
     | '/app/ventes/$id'
     | '/app/ventes/'
+    | '/app/tresorerie/$id'
+    | '/app/tresorerie/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -397,6 +419,8 @@ export interface FileRouteTypes {
     | '/app/ventes/nouvelle'
     | '/app/ventes/$id'
     | '/app/ventes'
+    | '/app/tresorerie/$id'
+    | '/app/tresorerie'
   id:
     | '__root__'
     | '/'
@@ -432,6 +456,8 @@ export interface FileRouteTypes {
     | '/_authenticated/app/ventes/'
     | '/_authenticated/app/ventes/nouvelle'
     | '/_authenticated/app/ventes/$id'
+    | '/_authenticated/app/tresorerie/'
+    | '/_authenticated/app/tresorerie/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -596,6 +622,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppVentesIdRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/tresorerie/': {
+      id: '/_authenticated/app/tresorerie/'
+      path: '/tresorerie'
+      fullPath: '/app/tresorerie'
+      preLoaderRoute: typeof AuthenticatedAppTresorerieIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/tresorerie/$id': {
+      id: '/_authenticated/app/tresorerie/$id'
+      path: '/tresorerie/$id'
+      fullPath: '/app/tresorerie/$id'
+      preLoaderRoute: typeof AuthenticatedAppTresorerieIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/comptabilite': {
       id: '/_authenticated/app/comptabilite'
       path: '/comptabilite'
@@ -739,6 +779,8 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppVentesIndexRoute: typeof AuthenticatedAppVentesIndexRoute
   AuthenticatedAppVentesNouvelleRoute: typeof AuthenticatedAppVentesNouvelleRoute
   AuthenticatedAppVentesIdRoute: typeof AuthenticatedAppVentesIdRoute
+  AuthenticatedAppTresorerieIndexRoute: typeof AuthenticatedAppTresorerieIndexRoute
+  AuthenticatedAppTresorerieIdRoute: typeof AuthenticatedAppTresorerieIdRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
@@ -753,6 +795,8 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppVentesIndexRoute: AuthenticatedAppVentesIndexRoute,
   AuthenticatedAppVentesNouvelleRoute: AuthenticatedAppVentesNouvelleRoute,
   AuthenticatedAppVentesIdRoute: AuthenticatedAppVentesIdRoute,
+  AuthenticatedAppTresorerieIndexRoute: AuthenticatedAppTresorerieIndexRoute,
+  AuthenticatedAppTresorerieIdRoute: AuthenticatedAppTresorerieIdRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =

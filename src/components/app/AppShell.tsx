@@ -39,7 +39,7 @@ const NAV: NavItem[] = [
   { to: "/app/comptabilite/ecritures", label: "Comptabilité", icon: BookOpen },
   { to: "/app/ventes", label: "Ventes", icon: FileText },
   { to: "/app/achats", label: "Achats", icon: ShoppingCart },
-  { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet, soon: true },
+  { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet },
   { to: "/app/tiers", label: "Tiers", icon: Users },
   { to: "/app/export", label: "Sauvegarde", icon: Archive },
   { to: "/app/parametres", label: "Paramètres", icon: Settings, soon: true },

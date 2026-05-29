@@ -1077,6 +1077,85 @@ export type Database = {
         }
         Relationships: []
       }
+      support_messages: {
+        Row: {
+          auteur: string
+          created_at: string
+          entreprise_id: string
+          id: string
+          message: string
+          ticket_id: string
+        }
+        Insert: {
+          auteur?: string
+          created_at?: string
+          entreprise_id: string
+          id?: string
+          message: string
+          ticket_id: string
+        }
+        Update: {
+          auteur?: string
+          created_at?: string
+          entreprise_id?: string
+          id?: string
+          message?: string
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          entreprise_id: string
+          id: string
+          priorite: Database["public"]["Enums"]["ticket_priorite"]
+          statut: Database["public"]["Enums"]["ticket_statut"]
+          sujet: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          entreprise_id: string
+          id?: string
+          priorite?: Database["public"]["Enums"]["ticket_priorite"]
+          statut?: Database["public"]["Enums"]["ticket_statut"]
+          sujet: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          entreprise_id?: string
+          id?: string
+          priorite?: Database["public"]["Enums"]["ticket_priorite"]
+          statut?: Database["public"]["Enums"]["ticket_statut"]
+          sujet?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tiers: {
         Row: {
           actif: boolean
@@ -1298,6 +1377,8 @@ export type Database = {
       periode_statut: "ouverte" | "en_revue" | "verrouillee" | "cloturee"
       regime_fiscal: "reel" | "simplifie" | "liberatoire" | "non_assujetti"
       subscription_status: "trial" | "actif" | "suspendu" | "expire"
+      ticket_priorite: "basse" | "normale" | "haute"
+      ticket_statut: "ouvert" | "en_cours" | "resolu" | "ferme"
       tiers_type: "client" | "fournisseur" | "salarie" | "autre"
       tresorerie_type: "banque" | "caisse" | "mobile_money" | "autre"
     }
@@ -1472,6 +1553,8 @@ export const Constants = {
       periode_statut: ["ouverte", "en_revue", "verrouillee", "cloturee"],
       regime_fiscal: ["reel", "simplifie", "liberatoire", "non_assujetti"],
       subscription_status: ["trial", "actif", "suspendu", "expire"],
+      ticket_priorite: ["basse", "normale", "haute"],
+      ticket_statut: ["ouvert", "en_cours", "resolu", "ferme"],
       tiers_type: ["client", "fournisseur", "salarie", "autre"],
       tresorerie_type: ["banque", "caisse", "mobile_money", "autre"],
     },

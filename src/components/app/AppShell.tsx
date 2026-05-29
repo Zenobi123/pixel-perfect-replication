@@ -11,6 +11,7 @@ import {
   Archive,
   ShoppingCart,
   Landmark,
+  LifeBuoy,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,6 +45,7 @@ const NAV: NavItem[] = [
   { to: "/app/fiscalite", label: "Fiscalité", icon: Landmark },
   { to: "/app/tiers", label: "Tiers", icon: Users },
   { to: "/app/export", label: "Sauvegarde", icon: Archive },
+  { to: "/app/support", label: "Support", icon: LifeBuoy },
   { to: "/app/parametres", label: "Paramètres", icon: Settings, soon: true },
 ];
 

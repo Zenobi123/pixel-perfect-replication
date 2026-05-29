@@ -23,6 +23,7 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppTiersRouteImport } from './routes/_authenticated/app.tiers'
 import { Route as AuthenticatedAppFiscaliteRouteImport } from './routes/_authenticated/app.fiscalite'
+import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
 import { Route as AuthenticatedAppTresorerieIndexRouteImport } from './routes/_authenticated/app.tresorerie.index'
 import { Route as AuthenticatedAppTresorerieIdRouteImport } from './routes/_authenticated/app.tresorerie.$id'
 import { Route as AuthenticatedAppAchatsIndexRouteImport } from './routes/_authenticated/app.achats.index'
@@ -116,6 +117,11 @@ const AuthenticatedAppFiscaliteRoute =
     path: '/fiscalite',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppSupportRoute = AuthenticatedAppSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppTresorerieIndexRoute =
   AuthenticatedAppTresorerieIndexRouteImport.update({
     id: '/tresorerie/',
@@ -263,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/app/tiers': typeof AuthenticatedAppTiersRoute
   '/app/fiscalite': typeof AuthenticatedAppFiscaliteRoute
+  '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/app/tresorerie/$id': typeof AuthenticatedAppTresorerieIdRoute
@@ -300,6 +307,7 @@ export interface FileRoutesByTo {
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/tiers': typeof AuthenticatedAppTiersRoute
   '/app/fiscalite': typeof AuthenticatedAppFiscaliteRoute
+  '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
@@ -337,6 +345,7 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/app/tiers': typeof AuthenticatedAppTiersRoute
   '/_authenticated/app/fiscalite': typeof AuthenticatedAppFiscaliteRoute
+  '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
   '/_authenticated/app/achats/': typeof AuthenticatedAppAchatsIndexRoute
   '/_authenticated/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
   '/_authenticated/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
@@ -376,6 +385,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/app/tiers'
     | '/app/fiscalite'
+    | '/app/support'
     | '/app/export'
     | '/app/comptabilite'
     | '/app/'
@@ -413,6 +423,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/tiers'
     | '/app/fiscalite'
+    | '/app/support'
     | '/app/export'
     | '/app/comptabilite/balance'
     | '/app/comptabilite/balance-auxiliaire'
@@ -449,6 +460,7 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/_authenticated/app/tiers'
     | '/_authenticated/app/fiscalite'
+    | '/_authenticated/app/support'
     | '/_authenticated/app/export'
     | '/_authenticated/app/comptabilite'
     | '/_authenticated/app/'
@@ -591,6 +603,13 @@ declare module '@tanstack/react-router' {
       path: '/fiscalite'
       fullPath: '/app/fiscalite'
       preLoaderRoute: typeof AuthenticatedAppFiscaliteRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/support': {
+      id: '/_authenticated/app/support'
+      path: '/support'
+      fullPath: '/app/support'
+      preLoaderRoute: typeof AuthenticatedAppSupportRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/export': {
@@ -791,6 +810,7 @@ const AuthenticatedAppComptabiliteRouteWithChildren =
 interface AuthenticatedAppRouteChildren {
   AuthenticatedAppTiersRoute: typeof AuthenticatedAppTiersRoute
   AuthenticatedAppFiscaliteRoute: typeof AuthenticatedAppFiscaliteRoute
+  AuthenticatedAppSupportRoute: typeof AuthenticatedAppSupportRoute
   AuthenticatedAppExportRoute: typeof AuthenticatedAppExportRoute
   AuthenticatedAppComptabiliteRoute: typeof AuthenticatedAppComptabiliteRouteWithChildren
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
@@ -807,6 +827,7 @@ interface AuthenticatedAppRouteChildren {
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppTiersRoute: AuthenticatedAppTiersRoute,
   AuthenticatedAppFiscaliteRoute: AuthenticatedAppFiscaliteRoute,
+  AuthenticatedAppSupportRoute: AuthenticatedAppSupportRoute,
   AuthenticatedAppExportRoute: AuthenticatedAppExportRoute,
   AuthenticatedAppComptabiliteRoute:
     AuthenticatedAppComptabiliteRouteWithChildren,

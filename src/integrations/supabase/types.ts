@@ -483,6 +483,57 @@ export type Database = {
           },
         ]
       }
+      periodes: {
+        Row: {
+          created_at: string
+          date_debut: string
+          date_fin: string
+          entreprise_id: string
+          exercice_id: string
+          id: string
+          libelle: string
+          statut: Database["public"]["Enums"]["periode_statut"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date_debut: string
+          date_fin: string
+          entreprise_id: string
+          exercice_id: string
+          id?: string
+          libelle: string
+          statut?: Database["public"]["Enums"]["periode_statut"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date_debut?: string
+          date_fin?: string
+          entreprise_id?: string
+          exercice_id?: string
+          id?: string
+          libelle?: string
+          statut?: Database["public"]["Enums"]["periode_statut"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "periodes_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "periodes_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -599,6 +650,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cloturer_periode: { Args: { _periode_id: string }; Returns: undefined }
       contrepasser_ecriture: {
         Args: { _date?: string; _ecriture_id: string }
         Returns: string
@@ -614,6 +666,7 @@ export type Database = {
         }
         Returns: string
       }
+      generer_periodes: { Args: { _exercice_id: string }; Returns: number }
       has_membership_role: {
         Args: {
           _entreprise_id: string
@@ -637,6 +690,7 @@ export type Database = {
         Args: { _entreprise_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["membership_role"]
       }
+      mettre_en_revue_periode: { Args: { _periode_id: string }; Returns: undefined }
       next_ecriture_numero: {
         Args: {
           _entreprise_id: string
@@ -645,8 +699,10 @@ export type Database = {
         }
         Returns: number
       }
+      rouvrir_periode: { Args: { _motif: string; _periode_id: string }; Returns: undefined }
       seed_plan_ohada: { Args: { _entreprise_id: string }; Returns: undefined }
       validate_ecriture: { Args: { _ecriture_id: string }; Returns: undefined }
+      verrouiller_periode: { Args: { _periode_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "super_admin"
@@ -655,6 +711,7 @@ export type Database = {
       exercice_statut: "ouvert" | "cloture"
       journal_type: "achats" | "ventes" | "banque" | "caisse" | "od" | "an"
       membership_role: "owner" | "admin" | "comptable" | "lecteur"
+      periode_statut: "ouverte" | "en_revue" | "verrouillee" | "cloturee"
       regime_fiscal: "reel" | "simplifie" | "liberatoire" | "non_assujetti"
       subscription_status: "trial" | "actif" | "suspendu" | "expire"
       tiers_type: "client" | "fournisseur" | "salarie" | "autre"
@@ -791,6 +848,7 @@ export const Constants = {
       exercice_statut: ["ouvert", "cloture"],
       journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],
       membership_role: ["owner", "admin", "comptable", "lecteur"],
+      periode_statut: ["ouverte", "en_revue", "verrouillee", "cloturee"],
       regime_fiscal: ["reel", "simplifie", "liberatoire", "non_assujetti"],
       subscription_status: ["trial", "actif", "suspendu", "expire"],
       tiers_type: ["client", "fournisseur", "salarie", "autre"],

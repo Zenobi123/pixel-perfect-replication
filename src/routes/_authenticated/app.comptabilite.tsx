@@ -9,6 +9,7 @@ const TABS = [
   { to: "/app/comptabilite/journal", label: "Journal général" },
   { to: "/app/comptabilite/grand-livre", label: "Grand livre" },
   { to: "/app/comptabilite/balance", label: "Balance" },
+  { to: "/app/comptabilite/periodes", label: "Périodes" },
   { to: "/app/comptabilite/journaux", label: "Journaux" },
   { to: "/app/comptabilite/plan", label: "Plan comptable" },
 ];

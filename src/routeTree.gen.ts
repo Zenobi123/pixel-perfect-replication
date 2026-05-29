@@ -27,6 +27,7 @@ import { Route as AuthenticatedAppComptabiliteIndexRouteImport } from './routes/
 import { Route as AuthenticatedAppComptabilitePlanRouteImport } from './routes/_authenticated/app.comptabilite.plan'
 import { Route as AuthenticatedAppComptabiliteJournalRouteImport } from './routes/_authenticated/app.comptabilite.journal'
 import { Route as AuthenticatedAppComptabiliteGrandLivreRouteImport } from './routes/_authenticated/app.comptabilite.grand-livre'
+import { Route as AuthenticatedAppComptabilitePeriodesRouteImport } from './routes/_authenticated/app.comptabilite.periodes'
 import { Route as AuthenticatedAppComptabiliteBalanceRouteImport } from './routes/_authenticated/app.comptabilite.balance'
 import { Route as AuthenticatedAppComptabiliteJournauxRouteImport } from './routes/_authenticated/app.comptabilite.journaux'
 import { Route as AuthenticatedAppComptabiliteEcrituresIndexRouteImport } from './routes/_authenticated/app.comptabilite.ecritures.index'
@@ -127,6 +128,12 @@ const AuthenticatedAppComptabiliteGrandLivreRoute =
     path: '/grand-livre',
     getParentRoute: () => AuthenticatedAppComptabiliteRoute,
   } as any)
+const AuthenticatedAppComptabilitePeriodesRoute =
+  AuthenticatedAppComptabilitePeriodesRouteImport.update({
+    id: '/periodes',
+    path: '/periodes',
+    getParentRoute: () => AuthenticatedAppComptabiliteRoute,
+  } as any)
 const AuthenticatedAppComptabiliteBalanceRoute =
   AuthenticatedAppComptabiliteBalanceRouteImport.update({
     id: '/balance',
@@ -175,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
+  '/app/comptabilite/periodes': typeof AuthenticatedAppComptabilitePeriodesRoute
   '/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
   '/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
   '/app/comptabilite/': typeof AuthenticatedAppComptabiliteIndexRoute
@@ -197,6 +205,7 @@ export interface FileRoutesByTo {
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
+  '/app/comptabilite/periodes': typeof AuthenticatedAppComptabilitePeriodesRoute
   '/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
   '/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteIndexRoute
@@ -223,6 +232,7 @@ export interface FileRoutesById {
   '/_authenticated/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/_authenticated/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/_authenticated/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
+  '/_authenticated/app/comptabilite/periodes': typeof AuthenticatedAppComptabilitePeriodesRoute
   '/_authenticated/app/comptabilite/journaux': typeof AuthenticatedAppComptabiliteJournauxRoute
   '/_authenticated/app/comptabilite/plan': typeof AuthenticatedAppComptabilitePlanRoute
   '/_authenticated/app/comptabilite/': typeof AuthenticatedAppComptabiliteIndexRoute
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/app/comptabilite/balance'
     | '/app/comptabilite/grand-livre'
     | '/app/comptabilite/journal'
+    | '/app/comptabilite/periodes'
     | '/app/comptabilite/journaux'
     | '/app/comptabilite/plan'
     | '/app/comptabilite/'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/app/comptabilite/balance'
     | '/app/comptabilite/grand-livre'
     | '/app/comptabilite/journal'
+    | '/app/comptabilite/periodes'
     | '/app/comptabilite/journaux'
     | '/app/comptabilite/plan'
     | '/app/comptabilite'
@@ -296,6 +308,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/comptabilite/balance'
     | '/_authenticated/app/comptabilite/grand-livre'
     | '/_authenticated/app/comptabilite/journal'
+    | '/_authenticated/app/comptabilite/periodes'
     | '/_authenticated/app/comptabilite/journaux'
     | '/_authenticated/app/comptabilite/plan'
     | '/_authenticated/app/comptabilite/'
@@ -459,6 +472,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppComptabiliteBalanceRouteImport
       parentRoute: typeof AuthenticatedAppComptabiliteRoute
     }
+    '/_authenticated/app/comptabilite/periodes': {
+      id: '/_authenticated/app/comptabilite/periodes'
+      path: '/periodes'
+      fullPath: '/app/comptabilite/periodes'
+      preLoaderRoute: typeof AuthenticatedAppComptabilitePeriodesRouteImport
+      parentRoute: typeof AuthenticatedAppComptabiliteRoute
+    }
     '/_authenticated/app/comptabilite/ecritures/': {
       id: '/_authenticated/app/comptabilite/ecritures/'
       path: '/ecritures'
@@ -484,6 +504,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAppComptabiliteRouteChildren {
+  AuthenticatedAppComptabilitePeriodesRoute: typeof AuthenticatedAppComptabilitePeriodesRoute
   AuthenticatedAppComptabiliteBalanceRoute: typeof AuthenticatedAppComptabiliteBalanceRoute
   AuthenticatedAppComptabiliteGrandLivreRoute: typeof AuthenticatedAppComptabiliteGrandLivreRoute
   AuthenticatedAppComptabiliteJournalRoute: typeof AuthenticatedAppComptabiliteJournalRoute
@@ -497,6 +518,8 @@ interface AuthenticatedAppComptabiliteRouteChildren {
 
 const AuthenticatedAppComptabiliteRouteChildren: AuthenticatedAppComptabiliteRouteChildren =
   {
+    AuthenticatedAppComptabilitePeriodesRoute:
+      AuthenticatedAppComptabilitePeriodesRoute,
     AuthenticatedAppComptabiliteBalanceRoute:
       AuthenticatedAppComptabiliteBalanceRoute,
     AuthenticatedAppComptabiliteGrandLivreRoute:

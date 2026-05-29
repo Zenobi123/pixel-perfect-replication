@@ -42,6 +42,25 @@ Migration : `supabase/migrations/20260529120000_numerotation_atomique_ecritures.
 - Au déploiement, les compteurs sont amorcés depuis le `max(numero)` existant
   par (entreprise, exercice, journal) pour ne jamais réémettre un numéro.
 
+## Périodes et clôtures
+
+Migration : `supabase/migrations/20260529140000_periodes_verrouillage_cloture.sql`.
+
+Chaque exercice est découpé en **périodes mensuelles** (`generer_periodes`,
+idempotente ; générées aussi à l'onboarding). États possibles :
+`ouverte → en_revue → verrouillee → cloturee`, avec transitions contrôlées par
+des fonctions SECURITY DEFINER (audit systématique) :
+
+- `mettre_en_revue_periode`, `verrouiller_periode` (rôle owner/admin/comptable) ;
+- `cloturer_periode` (rôle owner/admin) — **refusée s'il reste des écritures
+  en brouillon** sur la période ;
+- `rouvrir_periode(_motif)` (rôle owner/admin) — **motif obligatoire**,
+  consigné dans `audit_log.payload`.
+
+Le trigger `trg_ecritures_periode` (`check_periode_ouverte`) **bloque toute
+création ou modification d'écriture** dont la date tombe dans une période
+`verrouillee` ou `cloturee` — la validation et la contrepassation comprises.
+
 ## Restitutions
 
 Les états (journal général, grand livre, balance générale) sont calculés à

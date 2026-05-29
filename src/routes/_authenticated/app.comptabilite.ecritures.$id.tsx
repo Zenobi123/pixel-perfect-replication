@@ -17,8 +17,11 @@ function EcritureDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("ecritures")
-        .select("id, journal_id, exercice_id, date_piece, reference, libelle, statut, numero, lignes_ecriture(id, compte_id, libelle, debit, credit, ordre)")
-        .eq("id", id).single();
+        .select(
+          "id, journal_id, exercice_id, date_piece, reference, libelle, statut, numero, lignes_ecriture(id, compte_id, libelle, debit, credit, ordre)",
+        )
+        .eq("id", id)
+        .single();
       if (error) throw error;
       return data;
     },
@@ -40,7 +43,7 @@ function EcritureDetail() {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">
-        Écriture n°{data.numero}
+        {data.numero != null ? `Écriture n°${data.numero}` : "Écriture (brouillon)"}
       </h2>
       <EcritureForm
         entrepriseId={current.id}

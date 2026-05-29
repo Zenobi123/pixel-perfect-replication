@@ -9,7 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { formatXAF } from "@/lib/format";
 
 type Compte = { id: string; numero: string; libelle: string };
@@ -70,8 +76,11 @@ export function EcritureForm({
     queryKey: ["journaux", entrepriseId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("journaux").select("id, code, libelle")
-        .eq("entreprise_id", entrepriseId).eq("actif", true).order("code");
+        .from("journaux")
+        .select("id, code, libelle")
+        .eq("entreprise_id", entrepriseId)
+        .eq("actif", true)
+        .order("code");
       if (error) throw error;
       return data as Journal[];
     },
@@ -81,8 +90,10 @@ export function EcritureForm({
     queryKey: ["exercices", entrepriseId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("exercices").select("id, libelle, date_debut, date_fin")
-        .eq("entreprise_id", entrepriseId).order("date_debut", { ascending: false });
+        .from("exercices")
+        .select("id, libelle, date_debut, date_fin")
+        .eq("entreprise_id", entrepriseId)
+        .order("date_debut", { ascending: false });
       if (error) throw error;
       return data as Exercice[];
     },
@@ -92,8 +103,11 @@ export function EcritureForm({
     queryKey: ["comptes-all", entrepriseId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("comptes").select("id, numero, libelle")
-        .eq("entreprise_id", entrepriseId).eq("actif", true).order("numero");
+        .from("comptes")
+        .select("id, numero, libelle")
+        .eq("entreprise_id", entrepriseId)
+        .eq("actif", true)
+        .order("numero");
       if (error) throw error;
       return data as Compte[];
     },
@@ -101,8 +115,10 @@ export function EcritureForm({
 
   // Default journal/exercice
   useEffect(() => {
-    if (!header.journal_id && journaux?.[0]) setHeader((h) => ({ ...h, journal_id: journaux[0].id }));
-    if (!header.exercice_id && exercices?.[0]) setHeader((h) => ({ ...h, exercice_id: exercices[0].id }));
+    if (!header.journal_id && journaux?.[0])
+      setHeader((h) => ({ ...h, journal_id: journaux[0].id }));
+    if (!header.exercice_id && exercices?.[0])
+      setHeader((h) => ({ ...h, exercice_id: exercices[0].id }));
   }, [journaux, exercices, header.journal_id, header.exercice_id]);
 
   const totals = useMemo(() => {
@@ -123,39 +139,52 @@ export function EcritureForm({
 
   async function save(validate: boolean) {
     if (!header.journal_id || !header.exercice_id) {
-      toast.error("Journal et exercice requis"); return;
+      toast.error("Journal et exercice requis");
+      return;
     }
-    const cleanLignes = lignes.filter((l) => l.compte_id && (Number(l.debit) > 0 || Number(l.credit) > 0));
-    if (cleanLignes.length < 2) { toast.error("Au moins 2 lignes avec un compte et un montant"); return; }
-    if (validate && !totals.balanced) { toast.error(`Écriture non équilibrée (écart: ${formatXAF(totals.diff)})`); return; }
+    const cleanLignes = lignes.filter(
+      (l) => l.compte_id && (Number(l.debit) > 0 || Number(l.credit) > 0),
+    );
+    if (cleanLignes.length < 2) {
+      toast.error("Au moins 2 lignes avec un compte et un montant");
+      return;
+    }
+    if (validate && !totals.balanced) {
+      toast.error(`Écriture non équilibrée (écart: ${formatXAF(totals.diff)})`);
+      return;
+    }
 
     setSaving(true);
     try {
       let ecritureId = header.id;
 
       if (mode === "create") {
-        const { data: numero } = await supabase.rpc("next_ecriture_numero", {
-          _entreprise_id: entrepriseId,
-          _exercice_id: header.exercice_id,
-          _journal_id: header.journal_id,
-        });
-        const { data, error } = await supabase.from("ecritures").insert({
-          entreprise_id: entrepriseId,
-          exercice_id: header.exercice_id,
-          journal_id: header.journal_id,
-          numero: numero ?? 1,
-          date_piece: header.date_piece,
-          reference: header.reference || null,
-          libelle: header.libelle,
-        }).select("id").single();
+        // Le numéro définitif est attribué atomiquement côté base lors de la
+        // validation (fonction validate_ecriture). Un brouillon reste donc
+        // sans numéro pour ne pas « consommer » de numéro inutilement.
+        const { data, error } = await supabase
+          .from("ecritures")
+          .insert({
+            entreprise_id: entrepriseId,
+            exercice_id: header.exercice_id,
+            journal_id: header.journal_id,
+            date_piece: header.date_piece,
+            reference: header.reference || null,
+            libelle: header.libelle,
+          })
+          .select("id")
+          .single();
         if (error) throw error;
         ecritureId = data.id;
       } else if (ecritureId) {
-        const { error } = await supabase.from("ecritures").update({
-          date_piece: header.date_piece,
-          reference: header.reference || null,
-          libelle: header.libelle,
-        }).eq("id", ecritureId);
+        const { error } = await supabase
+          .from("ecritures")
+          .update({
+            date_piece: header.date_piece,
+            reference: header.reference || null,
+            libelle: header.libelle,
+          })
+          .eq("id", ecritureId);
         if (error) throw error;
         await supabase.from("lignes_ecriture").delete().eq("ecriture_id", ecritureId);
       }
@@ -174,7 +203,9 @@ export function EcritureForm({
       if (errL) throw errL;
 
       if (validate) {
-        const { error: errV } = await supabase.rpc("validate_ecriture", { _ecriture_id: ecritureId! });
+        const { error: errV } = await supabase.rpc("validate_ecriture", {
+          _ecriture_id: ecritureId!,
+        });
         if (errV) throw errV;
       }
 
@@ -191,7 +222,10 @@ export function EcritureForm({
   async function contrepasser() {
     if (!header.id) return;
     const { error } = await supabase.rpc("contrepasser_ecriture", { _ecriture_id: header.id });
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Écriture contre-passée");
     qc.invalidateQueries({ queryKey: ["ecritures"] });
     navigate({ to: "/app/comptabilite/ecritures" as never });
@@ -212,33 +246,68 @@ export function EcritureForm({
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <div>
             <Label>Journal</Label>
-            <Select value={header.journal_id} onValueChange={(v) => setHeader({ ...header, journal_id: v })} disabled={!!readOnly || mode === "edit"}>
-              <SelectTrigger><SelectValue placeholder="…" /></SelectTrigger>
+            <Select
+              value={header.journal_id}
+              onValueChange={(v) => setHeader({ ...header, journal_id: v })}
+              disabled={!!readOnly || mode === "edit"}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="…" />
+              </SelectTrigger>
               <SelectContent>
-                {journaux?.map((j) => <SelectItem key={j.id} value={j.id}>{j.code} — {j.libelle}</SelectItem>)}
+                {journaux?.map((j) => (
+                  <SelectItem key={j.id} value={j.id}>
+                    {j.code} — {j.libelle}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
           <div>
             <Label>Exercice</Label>
-            <Select value={header.exercice_id} onValueChange={(v) => setHeader({ ...header, exercice_id: v })} disabled={!!readOnly || mode === "edit"}>
-              <SelectTrigger><SelectValue placeholder="…" /></SelectTrigger>
+            <Select
+              value={header.exercice_id}
+              onValueChange={(v) => setHeader({ ...header, exercice_id: v })}
+              disabled={!!readOnly || mode === "edit"}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="…" />
+              </SelectTrigger>
               <SelectContent>
-                {exercices?.map((e) => <SelectItem key={e.id} value={e.id}>{e.libelle}</SelectItem>)}
+                {exercices?.map((e) => (
+                  <SelectItem key={e.id} value={e.id}>
+                    {e.libelle}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
           <div>
             <Label>Date pièce</Label>
-            <Input type="date" value={header.date_piece} onChange={(e) => setHeader({ ...header, date_piece: e.target.value })} disabled={!!readOnly} />
+            <Input
+              type="date"
+              value={header.date_piece}
+              onChange={(e) => setHeader({ ...header, date_piece: e.target.value })}
+              disabled={!!readOnly}
+            />
           </div>
           <div>
             <Label>Référence</Label>
-            <Input value={header.reference} onChange={(e) => setHeader({ ...header, reference: e.target.value })} placeholder="FA-001" disabled={!!readOnly} />
+            <Input
+              value={header.reference}
+              onChange={(e) => setHeader({ ...header, reference: e.target.value })}
+              placeholder="FA-001"
+              disabled={!!readOnly}
+            />
           </div>
           <div>
             <Label>Libellé</Label>
-            <Input value={header.libelle} onChange={(e) => setHeader({ ...header, libelle: e.target.value })} placeholder="Achat fournitures…" disabled={!!readOnly} />
+            <Input
+              value={header.libelle}
+              onChange={(e) => setHeader({ ...header, libelle: e.target.value })}
+              placeholder="Achat fournitures…"
+              disabled={!!readOnly}
+            />
           </div>
         </div>
       </Card>
@@ -258,35 +327,61 @@ export function EcritureForm({
             {lignes.map((l, i) => (
               <tr key={i} className="border-t">
                 <td className="px-3 py-2">
-                  <Select value={l.compte_id} onValueChange={(v) => updateLigne(i, { compte_id: v })} disabled={!!readOnly}>
-                    <SelectTrigger><SelectValue placeholder="Compte…" /></SelectTrigger>
+                  <Select
+                    value={l.compte_id}
+                    onValueChange={(v) => updateLigne(i, { compte_id: v })}
+                    disabled={!!readOnly}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Compte…" />
+                    </SelectTrigger>
                     <SelectContent className="max-h-72">
                       {comptes?.map((c) => (
                         <SelectItem key={c.id} value={c.id}>
-                          <span className="font-mono mr-2">{c.numero}</span>{c.libelle}
+                          <span className="font-mono mr-2">{c.numero}</span>
+                          {c.libelle}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </td>
                 <td className="px-3 py-2">
-                  <Input value={l.libelle} onChange={(e) => updateLigne(i, { libelle: e.target.value })} disabled={!!readOnly} />
+                  <Input
+                    value={l.libelle}
+                    onChange={(e) => updateLigne(i, { libelle: e.target.value })}
+                    disabled={!!readOnly}
+                  />
                 </td>
                 <td className="px-3 py-2">
-                  <Input type="number" min="0" step="0.01" className="text-right font-mono"
+                  <Input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    className="text-right font-mono"
                     value={l.debit || ""}
                     onChange={(e) => updateLigne(i, { debit: Number(e.target.value), credit: 0 })}
-                    disabled={!!readOnly} />
+                    disabled={!!readOnly}
+                  />
                 </td>
                 <td className="px-3 py-2">
-                  <Input type="number" min="0" step="0.01" className="text-right font-mono"
+                  <Input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    className="text-right font-mono"
                     value={l.credit || ""}
                     onChange={(e) => updateLigne(i, { credit: Number(e.target.value), debit: 0 })}
-                    disabled={!!readOnly} />
+                    disabled={!!readOnly}
+                  />
                 </td>
                 <td className="px-3 py-2 text-center">
                   {!readOnly && (
-                    <Button variant="ghost" size="icon" onClick={() => removeLigne(i)} disabled={lignes.length <= 2}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeLigne(i)}
+                      disabled={lignes.length <= 2}
+                    >
                       <Trash2 className="h-4 w-4 text-muted-foreground" />
                     </Button>
                   )}
@@ -303,8 +398,12 @@ export function EcritureForm({
                   </Button>
                 )}
               </td>
-              <td className="px-3 py-2 text-right font-mono font-semibold">{formatXAF(totals.d)}</td>
-              <td className="px-3 py-2 text-right font-mono font-semibold">{formatXAF(totals.c)}</td>
+              <td className="px-3 py-2 text-right font-mono font-semibold">
+                {formatXAF(totals.d)}
+              </td>
+              <td className="px-3 py-2 text-right font-mono font-semibold">
+                {formatXAF(totals.c)}
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -314,7 +413,9 @@ export function EcritureForm({
                 ) : totals.balanced ? (
                   <span className="text-primary font-medium">✓ Équilibrée</span>
                 ) : (
-                  <span className="text-destructive font-medium">Écart : {formatXAF(totals.diff)}</span>
+                  <span className="text-destructive font-medium">
+                    Écart : {formatXAF(totals.diff)}
+                  </span>
                 )}
               </td>
             </tr>
@@ -323,7 +424,10 @@ export function EcritureForm({
       </Card>
 
       <div className="flex items-center justify-end gap-2">
-        <Button variant="ghost" onClick={() => navigate({ to: "/app/comptabilite/ecritures" as never })}>
+        <Button
+          variant="ghost"
+          onClick={() => navigate({ to: "/app/comptabilite/ecritures" as never })}
+        >
           Retour
         </Button>
         {readOnly && initial?.statut === "validee" && (

@@ -150,7 +150,7 @@ export type Database = {
           id: string
           journal_id: string
           libelle: string
-          numero: number
+          numero: number | null
           reference: string | null
           statut: Database["public"]["Enums"]["ecriture_statut"]
           updated_at: string
@@ -167,7 +167,7 @@ export type Database = {
           id?: string
           journal_id: string
           libelle: string
-          numero: number
+          numero?: number | null
           reference?: string | null
           statut?: Database["public"]["Enums"]["ecriture_statut"]
           updated_at?: string
@@ -184,7 +184,7 @@ export type Database = {
           id?: string
           journal_id?: string
           libelle?: string
-          numero?: number
+          numero?: number | null
           reference?: string | null
           statut?: Database["public"]["Enums"]["ecriture_statut"]
           updated_at?: string

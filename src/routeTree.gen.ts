@@ -21,6 +21,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppExportRouteImport } from './routes/_authenticated/app.export'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppComptabiliteRouteImport } from './routes/_authenticated/app.comptabilite'
 import { Route as AuthenticatedAppComptabiliteIndexRouteImport } from './routes/_authenticated/app.comptabilite.index'
@@ -92,6 +93,11 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAppExportRoute = AuthenticatedAppExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AuthenticatedAppRoute,
 } as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/tarifs': typeof TarifsRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/tarifs': typeof TarifsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/export': typeof AuthenticatedAppExportRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
   '/app/comptabilite/journal': typeof AuthenticatedAppComptabiliteJournalRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/tarifs': typeof TarifsRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/export': typeof AuthenticatedAppExportRoute
   '/_authenticated/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/app'
     | '/onboarding'
+    | '/app/export'
     | '/app/comptabilite'
     | '/app/'
     | '/app/comptabilite/balance'
@@ -279,6 +289,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/onboarding'
     | '/app'
+    | '/app/export'
     | '/app/comptabilite/balance'
     | '/app/comptabilite/grand-livre'
     | '/app/comptabilite/journal'
@@ -303,6 +314,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/export'
     | '/_authenticated/app/comptabilite'
     | '/_authenticated/app/'
     | '/_authenticated/app/comptabilite/balance'
@@ -421,6 +433,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/export': {
+      id: '/_authenticated/app/export'
+      path: '/export'
+      fullPath: '/app/export'
+      preLoaderRoute: typeof AuthenticatedAppExportRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/comptabilite': {
@@ -546,11 +565,13 @@ const AuthenticatedAppComptabiliteRouteWithChildren =
   )
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppExportRoute: typeof AuthenticatedAppExportRoute
   AuthenticatedAppComptabiliteRoute: typeof AuthenticatedAppComptabiliteRouteWithChildren
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppExportRoute: AuthenticatedAppExportRoute,
   AuthenticatedAppComptabiliteRoute:
     AuthenticatedAppComptabiliteRouteWithChildren,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,

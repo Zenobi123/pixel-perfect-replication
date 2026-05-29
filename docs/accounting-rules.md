@@ -61,6 +61,21 @@ Le trigger `trg_ecritures_periode` (`check_periode_ouverte`) **bloque toute
 création ou modification d'écriture** dont la date tombe dans une période
 `verrouillee` ou `cloturee` — la validation et la contrepassation comprises.
 
+## Abonnement (paiement manuel) et sauvegarde
+
+Migration : `supabase/migrations/20260529180000_abonnement_manuel.sql`.
+
+v0 sans agrégateur de paiement : l'encaissement se fait hors application puis
+un **super administrateur** active/prolonge/suspend l'abonnement via
+`activer_abonnement(entreprise, statut, jusqu_au)` (réservée `super_admin`,
+auditée). Le trigger `check_abonnement_actif` **bloque la création de nouvelles
+écritures** quand le statut est `suspendu` ou `expire`, sans jamais empêcher les
+consultations ni les exports (cahier §Règles de suspension, Parcours 4).
+
+**Export complet par entreprise** (`/app/export`, Module 18, critère global
+n°15) : sauvegarde JSON de toutes les entités comptables + exports CSV, filet de
+sécurité indépendant du plan d'hébergement, disponible même abonnement suspendu.
+
 ## Pièces justificatives (stockage privé)
 
 Migration : `supabase/migrations/20260529160000_documents_pieces_justificatives.sql`.

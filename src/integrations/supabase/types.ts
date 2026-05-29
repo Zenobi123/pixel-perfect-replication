@@ -278,6 +278,7 @@ export type Database = {
       }
       entreprises: {
         Row: {
+          abonnement_jusqu_au: string | null
           adresse: string | null
           created_at: string
           created_by: string
@@ -297,6 +298,7 @@ export type Database = {
           ville: string | null
         }
         Insert: {
+          abonnement_jusqu_au?: string | null
           adresse?: string | null
           created_at?: string
           created_by: string
@@ -316,6 +318,7 @@ export type Database = {
           ville?: string | null
         }
         Update: {
+          abonnement_jusqu_au?: string | null
           adresse?: string | null
           created_at?: string
           created_by?: string
@@ -704,6 +707,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      activer_abonnement: {
+        Args: {
+          _entreprise_id: string
+          _jusqu_au?: string
+          _statut: Database["public"]["Enums"]["subscription_status"]
+        }
+        Returns: undefined
+      }
       cloturer_periode: { Args: { _periode_id: string }; Returns: undefined }
       contrepasser_ecriture: {
         Args: { _date?: string; _ecriture_id: string }

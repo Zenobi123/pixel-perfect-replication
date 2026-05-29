@@ -9,6 +9,7 @@ import {
   Settings,
   Building2,
   Archive,
+  ShoppingCart,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,6 +38,7 @@ const NAV: NavItem[] = [
   { to: "/app", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
   { to: "/app/comptabilite/ecritures", label: "Comptabilité", icon: BookOpen },
   { to: "/app/ventes", label: "Ventes", icon: FileText },
+  { to: "/app/achats", label: "Achats", icon: ShoppingCart },
   { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet, soon: true },
   { to: "/app/tiers", label: "Tiers", icon: Users },
   { to: "/app/export", label: "Sauvegarde", icon: Archive },

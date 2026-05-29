@@ -14,6 +14,97 @@ export type Database = {
   }
   public: {
     Tables: {
+      achats: {
+        Row: {
+          compte_charge_id: string | null
+          created_at: string
+          created_by: string
+          date_echeance: string | null
+          date_facture: string
+          ecriture_id: string | null
+          entreprise_id: string
+          exercice_id: string
+          id: string
+          montant_paye: number
+          numero: number | null
+          objet: string | null
+          reference_fournisseur: string | null
+          statut: Database["public"]["Enums"]["achat_statut"]
+          tiers_id: string | null
+          total_ht: number
+          total_ttc: number
+          total_tva: number
+          updated_at: string
+          validee_le: string | null
+        }
+        Insert: {
+          compte_charge_id?: string | null
+          created_at?: string
+          created_by?: string
+          date_echeance?: string | null
+          date_facture?: string
+          ecriture_id?: string | null
+          entreprise_id: string
+          exercice_id: string
+          id?: string
+          montant_paye?: number
+          numero?: number | null
+          objet?: string | null
+          reference_fournisseur?: string | null
+          statut?: Database["public"]["Enums"]["achat_statut"]
+          tiers_id?: string | null
+          total_ht?: number
+          total_ttc?: number
+          total_tva?: number
+          updated_at?: string
+          validee_le?: string | null
+        }
+        Update: {
+          compte_charge_id?: string | null
+          created_at?: string
+          created_by?: string
+          date_echeance?: string | null
+          date_facture?: string
+          ecriture_id?: string | null
+          entreprise_id?: string
+          exercice_id?: string
+          id?: string
+          montant_paye?: number
+          numero?: number | null
+          objet?: string | null
+          reference_fournisseur?: string | null
+          statut?: Database["public"]["Enums"]["achat_statut"]
+          tiers_id?: string | null
+          total_ht?: number
+          total_ttc?: number
+          total_tva?: number
+          updated_at?: string
+          validee_le?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achats_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achats_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achats_tiers_id_fkey"
+            columns: ["tiers_id"]
+            isOneToOne: false
+            referencedRelation: "tiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -575,6 +666,53 @@ export type Database = {
           },
         ]
       }
+      lignes_achat: {
+        Row: {
+          achat_id: string
+          created_at: string
+          designation: string
+          entreprise_id: string
+          id: string
+          montant_ht: number
+          ordre: number
+          prix_unitaire: number
+          quantite: number
+          taux_tva: number
+        }
+        Insert: {
+          achat_id: string
+          created_at?: string
+          designation: string
+          entreprise_id: string
+          id?: string
+          montant_ht?: number
+          ordre?: number
+          prix_unitaire?: number
+          quantite?: number
+          taux_tva?: number
+        }
+        Update: {
+          achat_id?: string
+          created_at?: string
+          designation?: string
+          entreprise_id?: string
+          id?: string
+          montant_ht?: number
+          ordre?: number
+          prix_unitaire?: number
+          quantite?: number
+          taux_tva?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lignes_achat_achat_id_fkey"
+            columns: ["achat_id"]
+            isOneToOne: false
+            referencedRelation: "achats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lignes_ecriture: {
         Row: {
           compte_id: string
@@ -869,6 +1007,10 @@ export type Database = {
         }
         Returns: string
       }
+      enregistrer_paiement_achat: {
+        Args: { _achat_id: string; _montant: number }
+        Returns: undefined
+      }
       enregistrer_reglement: {
         Args: { _facture_id: string; _montant: number }
         Returns: undefined
@@ -909,10 +1051,17 @@ export type Database = {
       rouvrir_periode: { Args: { _motif: string; _periode_id: string }; Returns: undefined }
       seed_plan_ohada: { Args: { _entreprise_id: string }; Returns: undefined }
       validate_ecriture: { Args: { _ecriture_id: string }; Returns: undefined }
+      valider_achat: { Args: { _achat_id: string }; Returns: undefined }
       valider_facture: { Args: { _facture_id: string }; Returns: undefined }
       verrouiller_periode: { Args: { _periode_id: string }; Returns: undefined }
     }
     Enums: {
+      achat_statut:
+        | "brouillon"
+        | "validee"
+        | "partiellement_payee"
+        | "payee"
+        | "annulee"
       app_role: "super_admin"
       compte_sens: "debit" | "credit" | "mixte"
       document_type:
@@ -1068,6 +1217,13 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      achat_statut: [
+        "brouillon",
+        "validee",
+        "partiellement_payee",
+        "payee",
+        "annulee",
+      ],
       app_role: ["super_admin"],
       compte_sens: ["debit", "credit", "mixte"],
       document_type: [

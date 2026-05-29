@@ -386,6 +386,144 @@ export type Database = {
           },
         ]
       }
+      factures: {
+        Row: {
+          created_at: string
+          created_by: string
+          date_echeance: string | null
+          date_facture: string
+          ecriture_id: string | null
+          entreprise_id: string
+          exercice_id: string
+          facture_origine_id: string | null
+          id: string
+          montant_paye: number
+          numero: number | null
+          objet: string | null
+          statut: Database["public"]["Enums"]["facture_statut"]
+          tiers_id: string | null
+          total_ht: number
+          total_ttc: number
+          total_tva: number
+          type: Database["public"]["Enums"]["facture_type"]
+          updated_at: string
+          validee_le: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          date_echeance?: string | null
+          date_facture?: string
+          ecriture_id?: string | null
+          entreprise_id: string
+          exercice_id: string
+          facture_origine_id?: string | null
+          id?: string
+          montant_paye?: number
+          numero?: number | null
+          objet?: string | null
+          statut?: Database["public"]["Enums"]["facture_statut"]
+          tiers_id?: string | null
+          total_ht?: number
+          total_ttc?: number
+          total_tva?: number
+          type?: Database["public"]["Enums"]["facture_type"]
+          updated_at?: string
+          validee_le?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          date_echeance?: string | null
+          date_facture?: string
+          ecriture_id?: string | null
+          entreprise_id?: string
+          exercice_id?: string
+          facture_origine_id?: string | null
+          id?: string
+          montant_paye?: number
+          numero?: number | null
+          objet?: string | null
+          statut?: Database["public"]["Enums"]["facture_statut"]
+          tiers_id?: string | null
+          total_ht?: number
+          total_ttc?: number
+          total_tva?: number
+          type?: Database["public"]["Enums"]["facture_type"]
+          updated_at?: string
+          validee_le?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "factures_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "factures_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "factures_tiers_id_fkey"
+            columns: ["tiers_id"]
+            isOneToOne: false
+            referencedRelation: "tiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lignes_facture: {
+        Row: {
+          created_at: string
+          designation: string
+          entreprise_id: string
+          facture_id: string
+          id: string
+          montant_ht: number
+          ordre: number
+          prix_unitaire: number
+          quantite: number
+          taux_tva: number
+        }
+        Insert: {
+          created_at?: string
+          designation: string
+          entreprise_id: string
+          facture_id: string
+          id?: string
+          montant_ht?: number
+          ordre?: number
+          prix_unitaire?: number
+          quantite?: number
+          taux_tva?: number
+        }
+        Update: {
+          created_at?: string
+          designation?: string
+          entreprise_id?: string
+          facture_id?: string
+          id?: string
+          montant_ht?: number
+          ordre?: number
+          prix_unitaire?: number
+          quantite?: number
+          taux_tva?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lignes_facture_facture_id_fkey"
+            columns: ["facture_id"]
+            isOneToOne: false
+            referencedRelation: "factures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journaux: {
         Row: {
           actif: boolean
@@ -731,6 +869,10 @@ export type Database = {
         }
         Returns: string
       }
+      enregistrer_reglement: {
+        Args: { _facture_id: string; _montant: number }
+        Returns: undefined
+      }
       generer_periodes: { Args: { _exercice_id: string }; Returns: number }
       has_membership_role: {
         Args: {
@@ -767,6 +909,7 @@ export type Database = {
       rouvrir_periode: { Args: { _motif: string; _periode_id: string }; Returns: undefined }
       seed_plan_ohada: { Args: { _entreprise_id: string }; Returns: undefined }
       validate_ecriture: { Args: { _ecriture_id: string }; Returns: undefined }
+      valider_facture: { Args: { _facture_id: string }; Returns: undefined }
       verrouiller_periode: { Args: { _periode_id: string }; Returns: undefined }
     }
     Enums: {
@@ -784,6 +927,14 @@ export type Database = {
         | "autre"
       ecriture_statut: "brouillon" | "validee" | "contrepassee"
       exercice_statut: "ouvert" | "cloture"
+      facture_statut:
+        | "brouillon"
+        | "validee"
+        | "envoyee"
+        | "partiellement_payee"
+        | "payee"
+        | "annulee"
+      facture_type: "devis" | "facture" | "avoir"
       journal_type: "achats" | "ventes" | "banque" | "caisse" | "od" | "an"
       membership_role: "owner" | "admin" | "comptable" | "lecteur"
       periode_statut: "ouverte" | "en_revue" | "verrouillee" | "cloturee"
@@ -931,6 +1082,15 @@ export const Constants = {
         "autre",
       ],
       ecriture_statut: ["brouillon", "validee", "contrepassee"],
+      facture_statut: [
+        "brouillon",
+        "validee",
+        "envoyee",
+        "partiellement_payee",
+        "payee",
+        "annulee",
+      ],
+      facture_type: ["devis", "facture", "avoir"],
       exercice_statut: ["ouvert", "cloture"],
       journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],
       membership_role: ["owner", "admin", "comptable", "lecteur"],

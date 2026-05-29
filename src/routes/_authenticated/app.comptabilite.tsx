@@ -6,6 +6,9 @@ export const Route = createFileRoute("/_authenticated/app/comptabilite")({
 
 const TABS = [
   { to: "/app/comptabilite/ecritures", label: "Écritures" },
+  { to: "/app/comptabilite/journal", label: "Journal général" },
+  { to: "/app/comptabilite/grand-livre", label: "Grand livre" },
+  { to: "/app/comptabilite/balance", label: "Balance" },
   { to: "/app/comptabilite/journaux", label: "Journaux" },
   { to: "/app/comptabilite/plan", label: "Plan comptable" },
 ];

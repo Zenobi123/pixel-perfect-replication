@@ -83,6 +83,20 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "achats_compte_charge_id_fkey"
+            columns: ["compte_charge_id"]
+            isOneToOne: false
+            referencedRelation: "comptes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achats_ecriture_id_fkey"
+            columns: ["ecriture_id"]
+            isOneToOne: false
+            referencedRelation: "ecritures"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "achats_entreprise_id_fkey"
             columns: ["entreprise_id"]
             isOneToOne: false
@@ -229,6 +243,118 @@ export type Database = {
           sens?: Database["public"]["Enums"]["compte_sens"]
         }
         Relationships: []
+      }
+      compteurs_achat: {
+        Row: {
+          dernier_numero: number
+          entreprise_id: string
+          exercice_id: string
+        }
+        Insert: {
+          dernier_numero?: number
+          entreprise_id: string
+          exercice_id: string
+        }
+        Update: {
+          dernier_numero?: number
+          entreprise_id?: string
+          exercice_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compteurs_achat_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compteurs_achat_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compteurs_ecriture: {
+        Row: {
+          dernier_numero: number
+          entreprise_id: string
+          exercice_id: string
+          journal_id: string
+        }
+        Insert: {
+          dernier_numero?: number
+          entreprise_id: string
+          exercice_id: string
+          journal_id: string
+        }
+        Update: {
+          dernier_numero?: number
+          entreprise_id?: string
+          exercice_id?: string
+          journal_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compteurs_ecriture_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compteurs_ecriture_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compteurs_ecriture_journal_id_fkey"
+            columns: ["journal_id"]
+            isOneToOne: false
+            referencedRelation: "journaux"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compteurs_facture: {
+        Row: {
+          dernier_numero: number
+          entreprise_id: string
+          exercice_id: string
+          type: Database["public"]["Enums"]["facture_type"]
+        }
+        Insert: {
+          dernier_numero?: number
+          entreprise_id: string
+          exercice_id: string
+          type: Database["public"]["Enums"]["facture_type"]
+        }
+        Update: {
+          dernier_numero?: number
+          entreprise_id?: string
+          exercice_id?: string
+          type?: Database["public"]["Enums"]["facture_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compteurs_facture_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compteurs_facture_exercice_id_fkey"
+            columns: ["exercice_id"]
+            isOneToOne: false
+            referencedRelation: "exercices"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       documents: {
         Row: {
@@ -546,6 +672,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "factures_ecriture_id_fkey"
+            columns: ["ecriture_id"]
+            isOneToOne: false
+            referencedRelation: "ecritures"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "factures_entreprise_id_fkey"
             columns: ["entreprise_id"]
             isOneToOne: false
@@ -560,57 +693,17 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "factures_facture_origine_id_fkey"
+            columns: ["facture_origine_id"]
+            isOneToOne: false
+            referencedRelation: "factures"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "factures_tiers_id_fkey"
             columns: ["tiers_id"]
             isOneToOne: false
             referencedRelation: "tiers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      lignes_facture: {
-        Row: {
-          created_at: string
-          designation: string
-          entreprise_id: string
-          facture_id: string
-          id: string
-          montant_ht: number
-          ordre: number
-          prix_unitaire: number
-          quantite: number
-          taux_tva: number
-        }
-        Insert: {
-          created_at?: string
-          designation: string
-          entreprise_id: string
-          facture_id: string
-          id?: string
-          montant_ht?: number
-          ordre?: number
-          prix_unitaire?: number
-          quantite?: number
-          taux_tva?: number
-        }
-        Update: {
-          created_at?: string
-          designation?: string
-          entreprise_id?: string
-          facture_id?: string
-          id?: string
-          montant_ht?: number
-          ordre?: number
-          prix_unitaire?: number
-          quantite?: number
-          taux_tva?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "lignes_facture_facture_id_fkey"
-            columns: ["facture_id"]
-            isOneToOne: false
-            referencedRelation: "factures"
             referencedColumns: ["id"]
           },
         ]
@@ -711,6 +804,13 @@ export type Database = {
             referencedRelation: "achats"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "lignes_achat_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
         ]
       }
       lignes_ecriture: {
@@ -780,6 +880,60 @@ export type Database = {
             columns: ["tiers_id"]
             isOneToOne: false
             referencedRelation: "tiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lignes_facture: {
+        Row: {
+          created_at: string
+          designation: string
+          entreprise_id: string
+          facture_id: string
+          id: string
+          montant_ht: number
+          ordre: number
+          prix_unitaire: number
+          quantite: number
+          taux_tva: number
+        }
+        Insert: {
+          created_at?: string
+          designation: string
+          entreprise_id: string
+          facture_id: string
+          id?: string
+          montant_ht?: number
+          ordre?: number
+          prix_unitaire?: number
+          quantite?: number
+          taux_tva?: number
+        }
+        Update: {
+          created_at?: string
+          designation?: string
+          entreprise_id?: string
+          facture_id?: string
+          id?: string
+          montant_ht?: number
+          ordre?: number
+          prix_unitaire?: number
+          quantite?: number
+          taux_tva?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lignes_facture_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lignes_facture_facture_id_fkey"
+            columns: ["facture_id"]
+            isOneToOne: false
+            referencedRelation: "factures"
             referencedColumns: ["id"]
           },
         ]
@@ -991,6 +1145,26 @@ export type Database = {
         }
         Returns: undefined
       }
+      attribuer_numero_achat: {
+        Args: { _entreprise_id: string; _exercice_id: string }
+        Returns: number
+      }
+      attribuer_numero_ecriture: {
+        Args: {
+          _entreprise_id: string
+          _exercice_id: string
+          _journal_id: string
+        }
+        Returns: number
+      }
+      attribuer_numero_facture: {
+        Args: {
+          _entreprise_id: string
+          _exercice_id: string
+          _type: Database["public"]["Enums"]["facture_type"]
+        }
+        Returns: number
+      }
       cloturer_periode: { Args: { _periode_id: string }; Returns: undefined }
       contrepasser_ecriture: {
         Args: { _date?: string; _ecriture_id: string }
@@ -1039,7 +1213,10 @@ export type Database = {
         Args: { _entreprise_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["membership_role"]
       }
-      mettre_en_revue_periode: { Args: { _periode_id: string }; Returns: undefined }
+      mettre_en_revue_periode: {
+        Args: { _periode_id: string }
+        Returns: undefined
+      }
       next_ecriture_numero: {
         Args: {
           _entreprise_id: string
@@ -1048,7 +1225,10 @@ export type Database = {
         }
         Returns: number
       }
-      rouvrir_periode: { Args: { _motif: string; _periode_id: string }; Returns: undefined }
+      rouvrir_periode: {
+        Args: { _motif: string; _periode_id: string }
+        Returns: undefined
+      }
       seed_plan_ohada: { Args: { _entreprise_id: string }; Returns: undefined }
       validate_ecriture: { Args: { _ecriture_id: string }; Returns: undefined }
       valider_achat: { Args: { _achat_id: string }; Returns: undefined }
@@ -1238,6 +1418,7 @@ export const Constants = {
         "autre",
       ],
       ecriture_statut: ["brouillon", "validee", "contrepassee"],
+      exercice_statut: ["ouvert", "cloture"],
       facture_statut: [
         "brouillon",
         "validee",
@@ -1247,7 +1428,6 @@ export const Constants = {
         "annulee",
       ],
       facture_type: ["devis", "facture", "avoir"],
-      exercice_statut: ["ouvert", "cloture"],
       journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],
       membership_role: ["owner", "admin", "comptable", "lecteur"],
       periode_statut: ["ouverte", "en_revue", "verrouillee", "cloturee"],

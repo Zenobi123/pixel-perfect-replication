@@ -33,7 +33,12 @@ type LigneBalance = {
 
 function BalancePage() {
   const { current } = useEntreprises();
-  const [filters, setFilters] = useState<RestitutionState>({ from: "", to: "", journalId: "all" });
+  const search = Route.useSearch();
+  const [filters, setFilters] = useState<RestitutionState>({
+    from: search.from ?? "",
+    to: search.to ?? "",
+    journalId: "all",
+  });
   const { data: mouvements, isLoading } = useMouvements(current?.id, filters);
 
   const { lignes, totaux } = useMemo(() => {

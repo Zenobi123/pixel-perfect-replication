@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Download } from "lucide-react";
+import { z } from "zod";
 import { useEntreprises } from "@/hooks/use-entreprises";
 import { useMouvements } from "@/hooks/use-mouvements";
 import { RestitutionFilters, type RestitutionState } from "@/components/app/RestitutionFilters";
@@ -9,8 +10,14 @@ import { Card } from "@/components/ui/card";
 import { formatXAF, formatDate } from "@/lib/format";
 import { downloadCsv } from "@/lib/export";
 
+const balanceSearchSchema = z.object({
+  from: z.string().optional(),
+  to: z.string().optional(),
+});
+
 export const Route = createFileRoute("/_authenticated/app/comptabilite/balance")({
   head: () => ({ meta: [{ title: "Balance générale — Kompta" }] }),
+  validateSearch: balanceSearchSchema,
   component: BalancePage,
 });
 

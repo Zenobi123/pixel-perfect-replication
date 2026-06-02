@@ -42,6 +42,7 @@ function statutBadge(s: PeriodeStatut) {
 function PeriodesPage() {
   const { current } = useEntreprises();
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [exerciceId, setExerciceId] = useState<string>("");
 
   const { data: exercices } = useQuery({

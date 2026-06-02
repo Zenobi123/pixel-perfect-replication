@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Lock, Unlock, CheckCircle2, Eye, CalendarPlus } from "lucide-react";
@@ -42,6 +42,7 @@ function statutBadge(s: PeriodeStatut) {
 function PeriodesPage() {
   const { current } = useEntreprises();
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [exerciceId, setExerciceId] = useState<string>("");
 
   const { data: exercices } = useQuery({
@@ -102,8 +103,34 @@ function PeriodesPage() {
     }
     await run(
       async () => await supabase.rpc("rouvrir_periode", { _periode_id: id, _motif: motif }),
-      "Période rouverte",
+      "Période rouverte — saisie de nouveau autorisée",
     );
+  }
+
+  async function verrouiller(p: Periode) {
+    const { error } = await supabase.rpc("verrouiller_periode", { _periode_id: p.id });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(`Période ${p.libelle} verrouillée — saisie comptable bloquée`);
+    qc.invalidateQueries({ queryKey: ["periodes", exerciceId] });
+  }
+
+  async function cloturer(p: Periode) {
+    const { error } = await supabase.rpc("cloturer_periode", { _periode_id: p.id });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(
+      `Période ${p.libelle} clôturée — saisie verrouillée. Génération de la balance…`,
+    );
+    qc.invalidateQueries({ queryKey: ["periodes", exerciceId] });
+    navigate({
+      to: "/app/comptabilite/balance",
+      search: { from: p.date_debut, to: p.date_fin },
+    });
   }
 
   if (!current) return <p className="text-muted-foreground">Aucune entreprise sélectionnée.</p>;
@@ -191,32 +218,10 @@ function PeriodesPage() {
                                 <Eye className="h-4 w-4 mr-1" /> En revue
                               </Button>
                             )}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                run(
-                                  async () =>
-                                    await supabase.rpc("verrouiller_periode", {
-                                      _periode_id: p.id,
-                                    }),
-                                  "Période verrouillée",
-                                )
-                              }
-                            >
+                            <Button variant="ghost" size="sm" onClick={() => verrouiller(p)}>
                               <Lock className="h-4 w-4 mr-1" /> Verrouiller
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                run(
-                                  async () =>
-                                    await supabase.rpc("cloturer_periode", { _periode_id: p.id }),
-                                  "Période clôturée",
-                                )
-                              }
-                            >
+                            <Button variant="ghost" size="sm" onClick={() => cloturer(p)}>
                               <CheckCircle2 className="h-4 w-4 mr-1" /> Clôturer
                             </Button>
                           </>
@@ -226,17 +231,7 @@ function PeriodesPage() {
                             <Button variant="ghost" size="sm" onClick={() => rouvrir(p.id)}>
                               <Unlock className="h-4 w-4 mr-1" /> Rouvrir
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                run(
-                                  async () =>
-                                    await supabase.rpc("cloturer_periode", { _periode_id: p.id }),
-                                  "Période clôturée",
-                                )
-                              }
-                            >
+                            <Button variant="ghost" size="sm" onClick={() => cloturer(p)}>
                               <CheckCircle2 className="h-4 w-4 mr-1" /> Clôturer
                             </Button>
                           </>

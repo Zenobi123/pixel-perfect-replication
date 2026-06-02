@@ -103,8 +103,34 @@ function PeriodesPage() {
     }
     await run(
       async () => await supabase.rpc("rouvrir_periode", { _periode_id: id, _motif: motif }),
-      "Période rouverte",
+      "Période rouverte — saisie de nouveau autorisée",
     );
+  }
+
+  async function verrouiller(p: Periode) {
+    const { error } = await supabase.rpc("verrouiller_periode", { _periode_id: p.id });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(`Période ${p.libelle} verrouillée — saisie comptable bloquée`);
+    qc.invalidateQueries({ queryKey: ["periodes", exerciceId] });
+  }
+
+  async function cloturer(p: Periode) {
+    const { error } = await supabase.rpc("cloturer_periode", { _periode_id: p.id });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(
+      `Période ${p.libelle} clôturée — saisie verrouillée. Génération de la balance…`,
+    );
+    qc.invalidateQueries({ queryKey: ["periodes", exerciceId] });
+    navigate({
+      to: "/app/comptabilite/balance",
+      search: { from: p.date_debut, to: p.date_fin },
+    });
   }
 
   if (!current) return <p className="text-muted-foreground">Aucune entreprise sélectionnée.</p>;

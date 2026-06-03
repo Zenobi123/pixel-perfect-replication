@@ -132,9 +132,14 @@ function BalancePage() {
         value={filters}
         onChange={setFilters}
         actions={
-          <Button variant="outline" size="sm" onClick={exportCsv} disabled={lignes.length === 0}>
-            <Download className="h-4 w-4 mr-1" /> Export CSV
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={exportCsv} disabled={lignes.length === 0}>
+              <Download className="h-4 w-4 mr-1" /> Export CSV
+            </Button>
+            <Button variant="outline" size="sm" onClick={exportPdf} disabled={lignes.length === 0}>
+              <FileText className="h-4 w-4 mr-1" /> Export PDF
+            </Button>
+          </div>
         }
       />
 

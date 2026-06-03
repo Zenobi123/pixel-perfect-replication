@@ -1,16 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Download } from "lucide-react";
+import { Download, FileText } from "lucide-react";
+import { z } from "zod";
 import { useEntreprises } from "@/hooks/use-entreprises";
 import { useMouvements } from "@/hooks/use-mouvements";
 import { RestitutionFilters, type RestitutionState } from "@/components/app/RestitutionFilters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatXAF, formatDate } from "@/lib/format";
-import { downloadCsv } from "@/lib/export";
+import { downloadCsv, downloadTablePdf } from "@/lib/export";
+
+const balanceSearchSchema = z.object({
+  from: z.string().optional(),
+  to: z.string().optional(),
+});
 
 export const Route = createFileRoute("/_authenticated/app/comptabilite/balance")({
   head: () => ({ meta: [{ title: "Balance générale — Kompta" }] }),
+  validateSearch: balanceSearchSchema,
   component: BalancePage,
 });
 
@@ -26,7 +33,12 @@ type LigneBalance = {
 
 function BalancePage() {
   const { current } = useEntreprises();
-  const [filters, setFilters] = useState<RestitutionState>({ from: "", to: "", journalId: "all" });
+  const search = Route.useSearch();
+  const [filters, setFilters] = useState<RestitutionState>({
+    from: search.from ?? "",
+    to: search.to ?? "",
+    journalId: "all",
+  });
   const { data: mouvements, isLoading } = useMouvements(current?.id, filters);
 
   const { lignes, totaux } = useMemo(() => {
@@ -74,6 +86,35 @@ function BalancePage() {
     );
   }
 
+  async function exportPdf() {
+    const totalRow = [
+      "",
+      "TOTAUX",
+      formatXAF(totaux.debit),
+      formatXAF(totaux.credit),
+      formatXAF(totaux.soldeDebit),
+      formatXAF(totaux.soldeCredit),
+    ];
+    await downloadTablePdf(
+      `balance_${filters.from}_${filters.to}`,
+      `Balance générale — ${current?.raison_sociale ?? ""}`,
+      `Période du ${formatDate(filters.from)} au ${formatDate(filters.to)} — écritures validées`,
+      ["Compte", "Libellé", "Débit", "Crédit", "Solde débiteur", "Solde créditeur"],
+      [
+        ...lignes.map((l) => [
+          l.numero,
+          l.libelle,
+          formatXAF(l.debit),
+          formatXAF(l.credit),
+          l.soldeDebit ? formatXAF(l.soldeDebit) : "—",
+          l.soldeCredit ? formatXAF(l.soldeCredit) : "—",
+        ]),
+        totalRow,
+      ],
+      { footer: `Édité le ${formatDate(new Date())}` },
+    );
+  }
+
   if (!current) return <p className="text-muted-foreground">Aucune entreprise sélectionnée.</p>;
 
   return (
@@ -91,9 +132,14 @@ function BalancePage() {
         value={filters}
         onChange={setFilters}
         actions={
-          <Button variant="outline" size="sm" onClick={exportCsv} disabled={lignes.length === 0}>
-            <Download className="h-4 w-4 mr-1" /> Export CSV
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={exportCsv} disabled={lignes.length === 0}>
+              <Download className="h-4 w-4 mr-1" /> Export CSV
+            </Button>
+            <Button variant="outline" size="sm" onClick={exportPdf} disabled={lignes.length === 0}>
+              <FileText className="h-4 w-4 mr-1" /> Export PDF
+            </Button>
+          </div>
         }
       />
 

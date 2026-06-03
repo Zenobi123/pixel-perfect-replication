@@ -24,7 +24,9 @@ Une écriture validée devient immuable (les politiques RLS interdisent
 
 ## Numérotation atomique (à la validation)
 
-Migration : `supabase/migrations/20260529120000_numerotation_atomique_ecritures.sql`.
+Schéma : migration consolidée `supabase/migrations/20260601040818_*.sql` ; le
+verrou de concurrence `FOR UPDATE` est ré-appliqué par
+`supabase/migrations/20260602000004_hardening_concurrence_for_update.sql`.
 
 - Le numéro **n'est attribué qu'à la validation**, jamais en brouillon (un
   brouillon abandonné ne consomme donc aucun numéro). La colonne
@@ -44,7 +46,7 @@ Migration : `supabase/migrations/20260529120000_numerotation_atomique_ecritures.
 
 ## Périodes et clôtures
 
-Migration : `supabase/migrations/20260529140000_periodes_verrouillage_cloture.sql`.
+Schéma : migration consolidée `supabase/migrations/20260601040818_*.sql`.
 
 Chaque exercice est découpé en **périodes mensuelles** (`generer_periodes`,
 idempotente ; générées aussi à l'onboarding). États possibles :
@@ -63,7 +65,7 @@ création ou modification d'écriture** dont la date tombe dans une période
 
 ## Abonnement (paiement manuel) et sauvegarde
 
-Migration : `supabase/migrations/20260529180000_abonnement_manuel.sql`.
+Schéma : migration consolidée `supabase/migrations/20260601040818_*.sql`.
 
 v0 sans agrégateur de paiement : l'encaissement se fait hors application puis
 un **super administrateur** active/prolonge/suspend l'abonnement via
@@ -78,7 +80,7 @@ sécurité indépendant du plan d'hébergement, disponible même abonnement susp
 
 ## Pièces justificatives (stockage privé)
 
-Migration : `supabase/migrations/20260529160000_documents_pieces_justificatives.sql`.
+Schéma : migration consolidée `supabase/migrations/20260601040818_*.sql`.
 
 - Bucket `pieces` créé **privé** (les buckets sont publics par défaut sur
   Lovable/Supabase), avec limite de taille (10 Mo) et types autorisés

@@ -310,7 +310,7 @@ function FiscalitePage() {
               Suivez l'obligation et son statut. Le montant reste saisi par un utilisateur autorisé.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <Label>Impôt</Label>
               <Select

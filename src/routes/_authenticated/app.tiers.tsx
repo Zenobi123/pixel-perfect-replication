@@ -302,7 +302,7 @@ function TiersPage() {
               Un compte auxiliaire de classe 4 peut être rattaché pour le suivi des soldes.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <Label>Code *</Label>
               <Input

@@ -365,8 +365,8 @@ export function AchatForm({
         </div>
       </Card>
 
-      <Card className="p-0 overflow-hidden">
-        <table className="w-full text-sm">
+      <Card className="p-0 overflow-x-auto">
+        <table className="w-full text-sm min-w-[680px]">
           <thead className="bg-muted/50 text-left">
             <tr>
               <th className="px-3 py-2">Désignation</th>

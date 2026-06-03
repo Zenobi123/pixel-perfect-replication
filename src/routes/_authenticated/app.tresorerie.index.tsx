@@ -374,7 +374,7 @@ function TresoreriePage() {
               Génère automatiquement une écriture équilibrée sur le compte de trésorerie.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <Label>Compte</Label>
               <Select

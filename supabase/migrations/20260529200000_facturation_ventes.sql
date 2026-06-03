@@ -130,7 +130,7 @@ declare
   _jou uuid; _c_client uuid; _c_prod uuid; _c_tva uuid;
   _e uuid; _num int; _is_avoir boolean;
 begin
-  select * into _f from public.factures where id = _facture_id;
+  select * into _f from public.factures where id = _facture_id for update;
   if _f.id is null then raise exception 'Facture introuvable'; end if;
   if not public.has_membership_role(auth.uid(), _f.entreprise_id, array['owner','admin','comptable']::membership_role[]) then
     raise exception 'Accès refusé'; end if;
@@ -218,7 +218,7 @@ create or replace function public.enregistrer_reglement(_facture_id uuid, _monta
 returns void language plpgsql security definer set search_path = public as $$
 declare _f public.factures; _paye numeric; _statut public.facture_statut;
 begin
-  select * into _f from public.factures where id = _facture_id;
+  select * into _f from public.factures where id = _facture_id for update;
   if _f.id is null then raise exception 'Facture introuvable'; end if;
   if not public.has_membership_role(auth.uid(), _f.entreprise_id, array['owner','admin','comptable']::membership_role[]) then
     raise exception 'Accès refusé'; end if;

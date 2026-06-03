@@ -120,7 +120,7 @@ declare
   _jou uuid; _c_charge uuid; _c_four uuid; _c_tva uuid;
   _e uuid; _num int;
 begin
-  select * into _a from public.achats where id = _achat_id;
+  select * into _a from public.achats where id = _achat_id for update;
   if _a.id is null then raise exception 'Achat introuvable'; end if;
   if not public.has_membership_role(auth.uid(), _a.entreprise_id, array['owner','admin','comptable']::membership_role[]) then
     raise exception 'Accès refusé'; end if;
@@ -191,7 +191,7 @@ create or replace function public.enregistrer_paiement_achat(_achat_id uuid, _mo
 returns void language plpgsql security definer set search_path = public as $$
 declare _a public.achats; _paye numeric; _statut public.achat_statut;
 begin
-  select * into _a from public.achats where id = _achat_id;
+  select * into _a from public.achats where id = _achat_id for update;
   if _a.id is null then raise exception 'Achat introuvable'; end if;
   if not public.has_membership_role(auth.uid(), _a.entreprise_id, array['owner','admin','comptable']::membership_role[]) then
     raise exception 'Accès refusé'; end if;

@@ -90,9 +90,13 @@ declare
   _nb int;
   _num int;
 begin
+  -- Verrou de ligne : sérialise deux validations concurrentes du même brouillon.
+  -- Le second appel reprend après commit du premier, relit statut='validee' et
+  -- échoue ci-dessous AVANT de consommer un numéro de journal (évite tout trou).
   select entreprise_id, exercice_id, journal_id, statut
     into _ent, _exo, _jou, _statut
-  from public.ecritures where id = _ecriture_id;
+  from public.ecritures where id = _ecriture_id
+  for update;
   if _ent is null then raise exception 'Écriture introuvable'; end if;
   if not public.has_membership_role(auth.uid(), _ent, array['owner','admin','comptable']::membership_role[]) then
     raise exception 'Accès refusé';
@@ -132,7 +136,7 @@ declare
   _new_id uuid;
   _next int;
 begin
-  select * into _src from public.ecritures where id = _ecriture_id;
+  select * into _src from public.ecritures where id = _ecriture_id for update;
   if _src is null then raise exception 'Écriture introuvable'; end if;
   if not public.has_membership_role(auth.uid(), _src.entreprise_id, array['owner','admin','comptable']::membership_role[]) then
     raise exception 'Accès refusé';

@@ -86,6 +86,35 @@ function BalancePage() {
     );
   }
 
+  async function exportPdf() {
+    const totalRow = [
+      "",
+      "TOTAUX",
+      formatXAF(totaux.debit),
+      formatXAF(totaux.credit),
+      formatXAF(totaux.soldeDebit),
+      formatXAF(totaux.soldeCredit),
+    ];
+    await downloadTablePdf(
+      `balance_${filters.from}_${filters.to}`,
+      `Balance générale — ${current?.raison_sociale ?? ""}`,
+      `Période du ${formatDate(filters.from)} au ${formatDate(filters.to)} — écritures validées`,
+      ["Compte", "Libellé", "Débit", "Crédit", "Solde débiteur", "Solde créditeur"],
+      [
+        ...lignes.map((l) => [
+          l.numero,
+          l.libelle,
+          formatXAF(l.debit),
+          formatXAF(l.credit),
+          l.soldeDebit ? formatXAF(l.soldeDebit) : "—",
+          l.soldeCredit ? formatXAF(l.soldeCredit) : "—",
+        ]),
+        totalRow,
+      ],
+      { footer: `Édité le ${formatDate(new Date())}` },
+    );
+  }
+
   if (!current) return <p className="text-muted-foreground">Aucune entreprise sélectionnée.</p>;
 
   return (

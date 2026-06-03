@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Download } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 import { z } from "zod";
 import { useEntreprises } from "@/hooks/use-entreprises";
 import { useMouvements } from "@/hooks/use-mouvements";
@@ -8,7 +8,7 @@ import { RestitutionFilters, type RestitutionState } from "@/components/app/Rest
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatXAF, formatDate } from "@/lib/format";
-import { downloadCsv } from "@/lib/export";
+import { downloadCsv, downloadTablePdf } from "@/lib/export";
 
 const balanceSearchSchema = z.object({
   from: z.string().optional(),

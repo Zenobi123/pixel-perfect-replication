@@ -356,123 +356,6 @@ export type Database = {
           },
         ]
       }
-      comptes_tresorerie: {
-        Row: {
-          actif: boolean
-          compte_id: string
-          created_at: string
-          entreprise_id: string
-          id: string
-          libelle: string
-          solde_initial: number
-          type: Database["public"]["Enums"]["tresorerie_type"]
-          updated_at: string
-        }
-        Insert: {
-          actif?: boolean
-          compte_id: string
-          created_at?: string
-          entreprise_id: string
-          id?: string
-          libelle: string
-          solde_initial?: number
-          type?: Database["public"]["Enums"]["tresorerie_type"]
-          updated_at?: string
-        }
-        Update: {
-          actif?: boolean
-          compte_id?: string
-          created_at?: string
-          entreprise_id?: string
-          id?: string
-          libelle?: string
-          solde_initial?: number
-          type?: Database["public"]["Enums"]["tresorerie_type"]
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "comptes_tresorerie_compte_id_fkey"
-            columns: ["compte_id"]
-            isOneToOne: false
-            referencedRelation: "comptes"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "comptes_tresorerie_entreprise_id_fkey"
-            columns: ["entreprise_id"]
-            isOneToOne: false
-            referencedRelation: "entreprises"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      declarations_fiscales: {
-        Row: {
-          code_impot: string
-          created_at: string
-          created_by: string
-          date_echeance: string
-          entreprise_id: string
-          exercice_id: string | null
-          id: string
-          libelle: string
-          montant: number | null
-          notes: string | null
-          periode: string | null
-          reference: string | null
-          statut: Database["public"]["Enums"]["declaration_statut"]
-          updated_at: string
-        }
-        Insert: {
-          code_impot: string
-          created_at?: string
-          created_by?: string
-          date_echeance: string
-          entreprise_id: string
-          exercice_id?: string | null
-          id?: string
-          libelle: string
-          montant?: number | null
-          notes?: string | null
-          periode?: string | null
-          reference?: string | null
-          statut?: Database["public"]["Enums"]["declaration_statut"]
-          updated_at?: string
-        }
-        Update: {
-          code_impot?: string
-          created_at?: string
-          created_by?: string
-          date_echeance?: string
-          entreprise_id?: string
-          exercice_id?: string | null
-          id?: string
-          libelle?: string
-          montant?: number | null
-          notes?: string | null
-          periode?: string | null
-          reference?: string | null
-          statut?: Database["public"]["Enums"]["declaration_statut"]
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "declarations_fiscales_entreprise_id_fkey"
-            columns: ["entreprise_id"]
-            isOneToOne: false
-            referencedRelation: "entreprises"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "declarations_fiscales_exercice_id_fkey"
-            columns: ["exercice_id"]
-            isOneToOne: false
-            referencedRelation: "exercices"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       documents: {
         Row: {
           chemin: string
@@ -1087,72 +970,6 @@ export type Database = {
           },
         ]
       }
-      mouvements_tresorerie: {
-        Row: {
-          compte_tresorerie_dest_id: string | null
-          compte_tresorerie_id: string
-          contrepartie_compte_id: string | null
-          created_at: string
-          created_by: string
-          date_mouvement: string
-          ecriture_id: string | null
-          entreprise_id: string
-          exercice_id: string
-          id: string
-          libelle: string
-          montant: number
-          tiers_id: string | null
-          type: Database["public"]["Enums"]["mouvement_tresorerie_type"]
-        }
-        Insert: {
-          compte_tresorerie_dest_id?: string | null
-          compte_tresorerie_id: string
-          contrepartie_compte_id?: string | null
-          created_at?: string
-          created_by?: string
-          date_mouvement?: string
-          ecriture_id?: string | null
-          entreprise_id: string
-          exercice_id: string
-          id?: string
-          libelle: string
-          montant: number
-          tiers_id?: string | null
-          type: Database["public"]["Enums"]["mouvement_tresorerie_type"]
-        }
-        Update: {
-          compte_tresorerie_dest_id?: string | null
-          compte_tresorerie_id?: string
-          contrepartie_compte_id?: string | null
-          created_at?: string
-          created_by?: string
-          date_mouvement?: string
-          ecriture_id?: string | null
-          entreprise_id?: string
-          exercice_id?: string
-          id?: string
-          libelle?: string
-          montant?: number
-          tiers_id?: string | null
-          type?: Database["public"]["Enums"]["mouvement_tresorerie_type"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mouvements_tresorerie_compte_tresorerie_id_fkey"
-            columns: ["compte_tresorerie_id"]
-            isOneToOne: false
-            referencedRelation: "comptes_tresorerie"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "mouvements_tresorerie_entreprise_id_fkey"
-            columns: ["entreprise_id"]
-            isOneToOne: false
-            referencedRelation: "entreprises"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       periodes: {
         Row: {
           created_at: string
@@ -1230,85 +1047,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
-      }
-      support_messages: {
-        Row: {
-          auteur: string
-          created_at: string
-          entreprise_id: string
-          id: string
-          message: string
-          ticket_id: string
-        }
-        Insert: {
-          auteur?: string
-          created_at?: string
-          entreprise_id: string
-          id?: string
-          message: string
-          ticket_id: string
-        }
-        Update: {
-          auteur?: string
-          created_at?: string
-          entreprise_id?: string
-          id?: string
-          message?: string
-          ticket_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "support_messages_ticket_id_fkey"
-            columns: ["ticket_id"]
-            isOneToOne: false
-            referencedRelation: "support_tickets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      support_tickets: {
-        Row: {
-          created_at: string
-          created_by: string
-          description: string | null
-          entreprise_id: string
-          id: string
-          priorite: Database["public"]["Enums"]["ticket_priorite"]
-          statut: Database["public"]["Enums"]["ticket_statut"]
-          sujet: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string
-          description?: string | null
-          entreprise_id: string
-          id?: string
-          priorite?: Database["public"]["Enums"]["ticket_priorite"]
-          statut?: Database["public"]["Enums"]["ticket_statut"]
-          sujet: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string
-          description?: string | null
-          entreprise_id?: string
-          id?: string
-          priorite?: Database["public"]["Enums"]["ticket_priorite"]
-          statut?: Database["public"]["Enums"]["ticket_statut"]
-          sujet?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "support_tickets_entreprise_id_fkey"
-            columns: ["entreprise_id"]
-            isOneToOne: false
-            referencedRelation: "entreprises"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       tiers: {
         Row: {
@@ -1443,20 +1181,6 @@ export type Database = {
         }
         Returns: string
       }
-      enregistrer_mouvement_tresorerie: {
-        Args: {
-          _compte_tresorerie_dest_id?: string
-          _compte_tresorerie_id: string
-          _contrepartie_compte_id?: string
-          _date: string
-          _exercice_id: string
-          _libelle: string
-          _montant: number
-          _tiers_id?: string
-          _type: Database["public"]["Enums"]["mouvement_tresorerie_type"]
-        }
-        Returns: string
-      }
       enregistrer_paiement_achat: {
         Args: { _achat_id: string; _montant: number }
         Returns: undefined
@@ -1464,10 +1188,6 @@ export type Database = {
       enregistrer_reglement: {
         Args: { _facture_id: string; _montant: number }
         Returns: undefined
-      }
-      generer_echeances_tva: {
-        Args: { _exercice_id: string; _jour?: number }
-        Returns: number
       }
       generer_periodes: { Args: { _exercice_id: string }; Returns: number }
       has_membership_role: {
@@ -1524,13 +1244,6 @@ export type Database = {
         | "annulee"
       app_role: "super_admin"
       compte_sens: "debit" | "credit" | "mixte"
-      declaration_statut:
-        | "a_preparer"
-        | "en_revue"
-        | "validee"
-        | "deposee"
-        | "payee"
-        | "archivee"
       document_type:
         | "facture_client"
         | "facture_fournisseur"
@@ -1553,14 +1266,10 @@ export type Database = {
       facture_type: "devis" | "facture" | "avoir"
       journal_type: "achats" | "ventes" | "banque" | "caisse" | "od" | "an"
       membership_role: "owner" | "admin" | "comptable" | "lecteur"
-      mouvement_tresorerie_type: "encaissement" | "decaissement" | "transfert"
       periode_statut: "ouverte" | "en_revue" | "verrouillee" | "cloturee"
       regime_fiscal: "reel" | "simplifie" | "liberatoire" | "non_assujetti"
       subscription_status: "trial" | "actif" | "suspendu" | "expire"
-      ticket_priorite: "basse" | "normale" | "haute"
-      ticket_statut: "ouvert" | "en_cours" | "resolu" | "ferme"
       tiers_type: "client" | "fournisseur" | "salarie" | "autre"
-      tresorerie_type: "banque" | "caisse" | "mobile_money" | "autre"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1697,14 +1406,6 @@ export const Constants = {
       ],
       app_role: ["super_admin"],
       compte_sens: ["debit", "credit", "mixte"],
-      declaration_statut: [
-        "a_preparer",
-        "en_revue",
-        "validee",
-        "deposee",
-        "payee",
-        "archivee",
-      ],
       document_type: [
         "facture_client",
         "facture_fournisseur",
@@ -1729,14 +1430,10 @@ export const Constants = {
       facture_type: ["devis", "facture", "avoir"],
       journal_type: ["achats", "ventes", "banque", "caisse", "od", "an"],
       membership_role: ["owner", "admin", "comptable", "lecteur"],
-      mouvement_tresorerie_type: ["encaissement", "decaissement", "transfert"],
       periode_statut: ["ouverte", "en_revue", "verrouillee", "cloturee"],
       regime_fiscal: ["reel", "simplifie", "liberatoire", "non_assujetti"],
       subscription_status: ["trial", "actif", "suspendu", "expire"],
-      ticket_priorite: ["basse", "normale", "haute"],
-      ticket_statut: ["ouvert", "en_cours", "resolu", "ferme"],
       tiers_type: ["client", "fournisseur", "salarie", "autre"],
-      tresorerie_type: ["banque", "caisse", "mobile_money", "autre"],
     },
   },
 } as const

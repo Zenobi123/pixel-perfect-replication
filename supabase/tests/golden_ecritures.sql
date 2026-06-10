@@ -40,10 +40,11 @@
 
 \set ON_ERROR_STOP on
 begin;
+select set_config('kompta.golden_uid', :uid, true);
 
 do $$
 declare
-  _uid uuid := :uid;
+  _uid uuid := current_setting('kompta.golden_uid')::uuid;
   _ent uuid;
   _exo uuid;
   _jven uuid; _jach uuid; _jban uuid;

@@ -1,5 +1,5 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "kompta",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -9,7 +9,13 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "check:schema": "node scripts/check-supabase-types.mjs",
+    "test:golden": "bash scripts/run-golden-test.sh",
+    "test:rls": "bash scripts/run-rls-test.sh",
+    "check": "npm run check:schema && npm run check:auth-ssr && npm run lint && npm run typecheck && npm run build",
+    "check:auth-ssr": "node scripts/check-auth-ssr.mjs"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

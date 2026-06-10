@@ -156,58 +156,23 @@ export function EcritureForm({
 
     setSaving(true);
     try {
-      let ecritureId = header.id;
-
-      if (mode === "create") {
-        // Le numéro définitif est attribué atomiquement côté base lors de la
-        // validation (fonction validate_ecriture). Un brouillon reste donc
-        // sans numéro pour ne pas « consommer » de numéro inutilement.
-        const { data, error } = await supabase
-          .from("ecritures")
-          .insert({
-            entreprise_id: entrepriseId,
-            exercice_id: header.exercice_id,
-            journal_id: header.journal_id,
-            date_piece: header.date_piece,
-            reference: header.reference || null,
-            libelle: header.libelle,
-          })
-          .select("id")
-          .single();
-        if (error) throw error;
-        ecritureId = data.id;
-      } else if (ecritureId) {
-        const { error } = await supabase
-          .from("ecritures")
-          .update({
-            date_piece: header.date_piece,
-            reference: header.reference || null,
-            libelle: header.libelle,
-          })
-          .eq("id", ecritureId);
-        if (error) throw error;
-        await supabase.from("lignes_ecriture").delete().eq("ecriture_id", ecritureId);
-      }
-
-      const { error: errL } = await supabase.from("lignes_ecriture").insert(
-        cleanLignes.map((l, idx) => ({
-          ecriture_id: ecritureId!,
-          entreprise_id: entrepriseId,
-          ordre: idx + 1,
+      const { error } = await supabase.rpc("save_ecriture_brouillon", {
+        _entreprise_id: entrepriseId,
+        _exercice_id: header.exercice_id,
+        _journal_id: header.journal_id,
+        _date_piece: header.date_piece,
+        _libelle: header.libelle,
+        _reference: header.reference,
+        _ecriture_id: header.id ?? undefined,
+        _validate: validate,
+        _lignes: cleanLignes.map((l) => ({
           compte_id: l.compte_id,
-          libelle: l.libelle || null,
+          libelle: l.libelle,
           debit: Number(l.debit) || 0,
           credit: Number(l.credit) || 0,
         })),
-      );
-      if (errL) throw errL;
-
-      if (validate) {
-        const { error: errV } = await supabase.rpc("validate_ecriture", {
-          _ecriture_id: ecritureId!,
-        });
-        if (errV) throw errV;
-      }
+      });
+      if (error) throw error;
 
       toast.success(validate ? "Écriture validée" : "Brouillon enregistré");
       qc.invalidateQueries({ queryKey: ["ecritures"] });

@@ -1,0 +1,36 @@
+name: Qualité
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase db reset --local
+      - name: Tests RLS
+        run: DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres npm run test:rls
+      - name: Préparer l’utilisateur golden
+        run: |
+          psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -v ON_ERROR_STOP=1 <<'SQL'
+          insert into auth.users (id, instance_id, aud, role, email, encrypted_password, created_at, updated_at)
+          values ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'golden@example.test', '', now(), now())
+          on conflict (id) do nothing;
+          SQL
+      - name: Test comptable golden
+        run: DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres GOLDEN_TEST_USER_ID=00000000-0000-0000-0000-000000000001 npm run test:golden

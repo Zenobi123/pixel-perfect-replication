@@ -119,6 +119,36 @@ export type Database = {
           },
         ]
       }
+      comptes_tresorerie: {
+        Row: { actif: boolean; compte_id: string; created_at: string; entreprise_id: string; id: string; libelle: string; solde_initial: number; type: Database["public"]["Enums"]["tresorerie_type"]; updated_at: string }
+        Insert: { actif?: boolean; compte_id: string; created_at?: string; entreprise_id: string; id?: string; libelle: string; solde_initial?: number; type?: Database["public"]["Enums"]["tresorerie_type"]; updated_at?: string }
+        Update: { actif?: boolean; compte_id?: string; created_at?: string; entreprise_id?: string; id?: string; libelle?: string; solde_initial?: number; type?: Database["public"]["Enums"]["tresorerie_type"]; updated_at?: string }
+        Relationships: []
+      }
+      declarations_fiscales: {
+        Row: { code_impot: string; created_at: string; created_by: string; date_echeance: string; entreprise_id: string; exercice_id: string | null; id: string; libelle: string; montant: number | null; notes: string | null; periode: string | null; reference: string | null; statut: Database["public"]["Enums"]["declaration_statut"]; updated_at: string }
+        Insert: { code_impot: string; created_at?: string; created_by?: string; date_echeance: string; entreprise_id: string; exercice_id?: string | null; id?: string; libelle: string; montant?: number | null; notes?: string | null; periode?: string | null; reference?: string | null; statut?: Database["public"]["Enums"]["declaration_statut"]; updated_at?: string }
+        Update: { code_impot?: string; created_at?: string; created_by?: string; date_echeance?: string; entreprise_id?: string; exercice_id?: string | null; id?: string; libelle?: string; montant?: number | null; notes?: string | null; periode?: string | null; reference?: string | null; statut?: Database["public"]["Enums"]["declaration_statut"]; updated_at?: string }
+        Relationships: []
+      }
+      mouvements_tresorerie: {
+        Row: { compte_tresorerie_dest_id: string | null; compte_tresorerie_id: string; contrepartie_compte_id: string | null; created_at: string; created_by: string; date_mouvement: string; ecriture_id: string | null; entreprise_id: string; exercice_id: string; id: string; libelle: string; montant: number; tiers_id: string | null; type: Database["public"]["Enums"]["mouvement_tresorerie_type"] }
+        Insert: { compte_tresorerie_dest_id?: string | null; compte_tresorerie_id: string; contrepartie_compte_id?: string | null; created_at?: string; created_by?: string; date_mouvement?: string; ecriture_id?: string | null; entreprise_id: string; exercice_id: string; id?: string; libelle: string; montant: number; tiers_id?: string | null; type: Database["public"]["Enums"]["mouvement_tresorerie_type"] }
+        Update: { compte_tresorerie_dest_id?: string | null; compte_tresorerie_id?: string; contrepartie_compte_id?: string | null; created_at?: string; created_by?: string; date_mouvement?: string; ecriture_id?: string | null; entreprise_id?: string; exercice_id?: string; id?: string; libelle?: string; montant?: number; tiers_id?: string | null; type?: Database["public"]["Enums"]["mouvement_tresorerie_type"] }
+        Relationships: []
+      }
+      support_messages: {
+        Row: { auteur: string; created_at: string; entreprise_id: string; id: string; message: string; ticket_id: string }
+        Insert: { auteur?: string; created_at?: string; entreprise_id: string; id?: string; message: string; ticket_id: string }
+        Update: { auteur?: string; created_at?: string; entreprise_id?: string; id?: string; message?: string; ticket_id?: string }
+        Relationships: []
+      }
+      support_tickets: {
+        Row: { created_at: string; created_by: string; description: string | null; entreprise_id: string; id: string; priorite: Database["public"]["Enums"]["ticket_priorite"]; statut: Database["public"]["Enums"]["ticket_statut"]; sujet: string; updated_at: string }
+        Insert: { created_at?: string; created_by?: string; description?: string | null; entreprise_id: string; id?: string; priorite?: Database["public"]["Enums"]["ticket_priorite"]; statut?: Database["public"]["Enums"]["ticket_statut"]; sujet: string; updated_at?: string }
+        Update: { created_at?: string; created_by?: string; description?: string | null; entreprise_id?: string; id?: string; priorite?: Database["public"]["Enums"]["ticket_priorite"]; statut?: Database["public"]["Enums"]["ticket_statut"]; sujet?: string; updated_at?: string }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -1165,6 +1195,9 @@ export type Database = {
         }
         Returns: number
       }
+      enregistrer_mouvement_tresorerie: { Args: { _compte_tresorerie_dest_id?: string; _compte_tresorerie_id: string; _contrepartie_compte_id?: string; _date: string; _exercice_id: string; _libelle: string; _montant: number; _tiers_id?: string; _type: Database["public"]["Enums"]["mouvement_tresorerie_type"] }; Returns: string }
+      generer_echeances_tva: { Args: { _exercice_id: string; _jour?: number }; Returns: number }
+      save_ecriture_brouillon: { Args: { _date_piece: string; _ecriture_id?: string; _entreprise_id: string; _exercice_id: string; _journal_id: string; _libelle: string; _lignes: Json; _reference: string; _validate?: boolean }; Returns: string }
       cloturer_periode: { Args: { _periode_id: string }; Returns: undefined }
       contrepasser_ecriture: {
         Args: { _date?: string; _ecriture_id: string }
@@ -1236,6 +1269,11 @@ export type Database = {
       verrouiller_periode: { Args: { _periode_id: string }; Returns: undefined }
     }
     Enums: {
+      declaration_statut: "a_preparer" | "en_revue" | "validee" | "deposee" | "payee" | "archivee"
+      mouvement_tresorerie_type: "encaissement" | "decaissement" | "transfert"
+      ticket_priorite: "basse" | "normale" | "haute"
+      ticket_statut: "ouvert" | "en_cours" | "resolu" | "ferme"
+      tresorerie_type: "banque" | "caisse" | "mobile_money" | "autre"
       achat_statut:
         | "brouillon"
         | "validee"
@@ -1397,6 +1435,11 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      declaration_statut: ["a_preparer", "en_revue", "validee", "deposee", "payee", "archivee"],
+      mouvement_tresorerie_type: ["encaissement", "decaissement", "transfert"],
+      ticket_priorite: ["basse", "normale", "haute"],
+      ticket_statut: ["ouvert", "en_cours", "resolu", "ferme"],
+      tresorerie_type: ["banque", "caisse", "mobile_money", "autre"],
       achat_statut: [
         "brouillon",
         "validee",

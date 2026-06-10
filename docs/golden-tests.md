@@ -8,27 +8,27 @@ en production.
 
 ## Le scénario (exercice 2026, XAF, TVA 19,25 %)
 
-| # | Journal | Écriture | Débit | Crédit |
-|---|---------|----------|------:|-------:|
-| 1 | VEN | Vente : 411 / 701 + 4431 | 411 = 1 192 500 | 701 = 1 000 000 ; 4431 = 192 500 |
-| 2 | BAN | Encaissement client : 521 / 411 | 521 = 1 192 500 | 411 = 1 192 500 |
-| 3 | ACH | Achat : 601 + 4452 / 401 | 601 = 600 000 ; 4452 = 115 500 | 401 = 715 500 |
-| 4 | BAN | Paiement fournisseur : 401 / 521 | 401 = 715 500 | 521 = 715 500 |
+| #   | Journal | Écriture                         |                          Débit |                           Crédit |
+| --- | ------- | -------------------------------- | -----------------------------: | -------------------------------: |
+| 1   | VEN     | Vente : 411 / 701 + 4431         |                411 = 1 192 500 | 701 = 1 000 000 ; 4431 = 192 500 |
+| 2   | BAN     | Encaissement client : 521 / 411  |                521 = 1 192 500 |                  411 = 1 192 500 |
+| 3   | ACH     | Achat : 601 + 4452 / 401         | 601 = 600 000 ; 4452 = 115 500 |                    401 = 715 500 |
+| 4   | BAN     | Paiement fournisseur : 401 / 521 |                  401 = 715 500 |                    521 = 715 500 |
 
 ## États attendus (figés)
 
-| Contrôle | Valeur attendue |
-|---|---:|
-| Total débit = total crédit | 3 816 000 |
-| Solde 521 Banque | 477 000 D |
-| Solde 601 Achats | 600 000 D |
-| Solde 4452 TVA récupérable | 115 500 D |
-| Solde 701 Ventes | 1 000 000 C |
-| Solde 4431 TVA facturée | 192 500 C |
-| Solde 411 Clients | 0 |
-| Solde 401 Fournisseurs | 0 |
+| Contrôle                      |    Valeur attendue |
+| ----------------------------- | -----------------: |
+| Total débit = total crédit    |          3 816 000 |
+| Solde 521 Banque              |          477 000 D |
+| Solde 601 Achats              |          600 000 D |
+| Solde 4452 TVA récupérable    |          115 500 D |
+| Solde 701 Ventes              |        1 000 000 C |
+| Solde 4431 TVA facturée       |          192 500 C |
+| Solde 411 Clients             |                  0 |
+| Solde 401 Fournisseurs        |                  0 |
 | Résultat (produits − charges) | 400 000 (bénéfice) |
-| Total actif = total passif | 592 500 |
+| Total actif = total passif    |            592 500 |
 
 ## Exécution
 
@@ -52,12 +52,11 @@ NOTICE:  GOLDEN OK — balance, résultat (400 000) et bilan (592 500) conformes
 ROLLBACK
 ```
 
-## Intégration continue (recommandée)
+## Intégration continue
 
-Ajouter une étape CI qui lance le script contre une base éphémère (Supabase CLI
-`supabase db start`, ou un conteneur Postgres sur lequel les migrations de
-`supabase/migrations/` ont été appliquées). Faire échouer le job si `psql`
-retourne un code non nul.
+Le workflow `.github/workflows/quality.yml` lance ce script contre la base locale
+éphémère créée par Supabase CLI après application de toutes les migrations. Le
+job échoue automatiquement si `psql` retourne un code non nul.
 
 ## Portée
 

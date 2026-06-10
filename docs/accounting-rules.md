@@ -112,3 +112,20 @@ CSV (séparateur `;`, BOM UTF-8 pour Excel francophone).
 Côté frontend : hook partagé `src/hooks/use-mouvements.tsx`, filtres communs
 `src/components/app/RestitutionFilters.tsx`, pages sous
 `src/routes/_authenticated/app.comptabilite.{journal,grand-livre,balance}.tsx`.
+
+## Écriture transactionnelle des brouillons
+
+La fonction `save_ecriture_brouillon` enregistre l'en-tête et remplace toutes les
+lignes dans une seule transaction. Elle vérifie le rôle, l'appartenance de
+l'exercice, du journal et des comptes au dossier, puis délègue la validation
+optionnelle à `validate_ecriture`. Une erreur annule donc l'ensemble de la
+sauvegarde, sans laisser de brouillon partiellement mis à jour.
+
+## Vérifications automatisées
+
+- `npm run check:schema` détecte toute table ou RPC utilisée par le frontend mais
+  absente des types Supabase suivis dans le dépôt ;
+- `npm run test:rls` vérifie l'isolation de deux utilisateurs appartenant à deux
+  entreprises distinctes ;
+- `npm run test:golden` rejoue le cycle comptable de référence contre une base de
+  développement migrée.

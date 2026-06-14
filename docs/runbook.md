@@ -51,6 +51,18 @@ wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 # liste exacte attendue par le build.
 ```
 
+**Configuration d'authentification** : la politique d'auth (confirmations email,
+expiration JWT, politique de mot de passe, rate-limits) est versionnée dans
+`supabase/config.toml`. Pour l'appliquer au projet managé :
+
+```bash
+supabase link --project-ref "$SUPABASE_PROJECT_ID"
+supabase config push        # applique [auth], [auth.email], [auth.rate_limit]…
+```
+
+Penser à y renseigner la vraie `site_url` de production (le fichier contient une
+valeur locale par défaut).
+
 ---
 
 ## 3. Procédure de déploiement

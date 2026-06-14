@@ -1,1 +1,46 @@
 project_id = "owdvxfvpolawafxzmnyx"
+
+# =============================================================================
+# Configuration d'authentification — VERSIONNÉE pour audit et reproductibilité.
+#
+# Ces réglages s'appliquent à `supabase start` (dev / CI) et peuvent être
+# poussés vers le projet managé via `supabase config push` (voir docs/runbook.md).
+# Toute modification de la politique de sécurité passe désormais par une revue
+# de ce fichier, et non plus par un changement opaque dans le dashboard.
+# Référence : https://supabase.com/docs/guides/local-development/cli/config
+# =============================================================================
+[auth]
+# Inscriptions ouvertes (l'application expose une page /signup).
+enable_signup = true
+# URL de base pour les liens d'email et la redirection par défaut.
+# Valeur locale ici ; en production elle est surchargée par la vraie URL via le
+# dashboard Supabase ou `supabase config push`.
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["http://127.0.0.1:3000"]
+# Durée de vie d'un access token (1 h) puis rotation du refresh token.
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+# Politique de mot de passe — alignée sur l'UI de /signup (8 caractères min).
+# Recommandation : renforcer en "lower_upper_letters_digits" en mettant à jour
+# simultanément l'indication affichée dans src/routes/signup.tsx.
+minimum_password_length = 8
+password_requirements = "no_required_characters"
+
+[auth.email]
+enable_signup = true
+# Confirmation d'adresse obligatoire (cohérent avec le message « Vérifiez votre
+# email pour confirmer » affiché après inscription).
+enable_confirmations = true
+# Re-confirmation lors d'un changement d'email, et ré-authentification lors d'un
+# changement de mot de passe.
+double_confirm_changes = true
+secure_password_change = true
+# Anti-abus : au plus un email transactionnel par minute et par utilisateur.
+max_frequency = "1m0s"
+
+[auth.rate_limit]
+# Limites anti-force-brute (par tranche horaire, par IP/identifiant selon le cas).
+sign_in_sign_ups = 30
+token_refresh = 150
+token_verifications = 30

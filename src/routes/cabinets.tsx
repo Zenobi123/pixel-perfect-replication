@@ -12,17 +12,36 @@ export const Route = createFileRoute("/cabinets")({
           "Kompta pour cabinets : portail dédié, dossiers illimités, vue consolidée, workflow de révision. Pensé pour les expert-comptables au Cameroun.",
       },
       { property: "og:title", content: "Kompta pour cabinets comptables" },
-      { property: "og:description", content: "Gérez tous vos dossiers clients OHADA depuis un seul espace." },
+      {
+        property: "og:description",
+        content: "Gérez tous vos dossiers clients OHADA depuis un seul espace.",
+      },
     ],
   }),
   component: CabinetsPage,
 });
 
 const benefits = [
-  { icon: FolderKanban, t: "Dossiers illimités", d: "Ajoutez autant de clients que nécessaire, sans coût additionnel par dossier." },
-  { icon: Workflow, t: "Workflow de révision", d: "Statuts dédiés : à saisir, à réviser, validé. Affectez les dossiers à vos collaborateurs." },
-  { icon: BarChart3, t: "Vue consolidée", d: "Suivez en un coup d'œil les échéances, soldes et alertes de tous vos clients." },
-  { icon: ShieldCheck, t: "Conformité & traçabilité", d: "Audit trail complet par dossier, exports normalisés, sauvegardes chiffrées." },
+  {
+    icon: FolderKanban,
+    t: "Dossiers illimités",
+    d: "Ajoutez autant de clients que nécessaire, sans coût additionnel par dossier.",
+  },
+  {
+    icon: Workflow,
+    t: "Workflow de révision",
+    d: "Statuts dédiés : à saisir, à réviser, validé. Affectez les dossiers à vos collaborateurs.",
+  },
+  {
+    icon: BarChart3,
+    t: "Vue consolidée",
+    d: "Suivez en un coup d'œil les échéances, soldes et alertes de tous vos clients.",
+  },
+  {
+    icon: ShieldCheck,
+    t: "Conformité & traçabilité",
+    d: "Audit trail complet par dossier, exports normalisés, sauvegardes chiffrées.",
+  },
 ];
 
 const checklist = [
@@ -38,19 +57,28 @@ function CabinetsPage() {
       <section className="bg-hero text-primary-foreground">
         <div className="absolute inset-0 bg-mesh opacity-70" />
         <div className="relative mx-auto max-w-7xl px-6 py-24">
-          <p className="text-sm font-medium uppercase tracking-widest text-accent">Cabinets comptables</p>
+          <p className="text-sm font-medium uppercase tracking-widest text-accent">
+            Cabinets comptables
+          </p>
           <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl text-balance">
             Tous vos dossiers clients dans un seul espace, sans compromis sur la conformité.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-white/70">
-            Kompta vous donne un portail cabinet dédié pour piloter votre activité d'expertise-comptable
-            au Cameroun, avec la rigueur du SYSCOHADA et la fluidité d'un outil moderne.
+            Kompta vous donne un portail cabinet dédié pour piloter votre activité
+            d'expertise-comptable au Cameroun, avec la rigueur du SYSCOHADA et la fluidité d'un
+            outil moderne.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/contact" className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-primary shadow-glow">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-primary shadow-glow"
+            >
               Demander une démo <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link to="/tarifs" className="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10">
+            <Link
+              to="/tarifs"
+              className="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
               Voir l'offre Cabinet
             </Link>
           </div>
@@ -76,8 +104,8 @@ function CabinetsPage() {
               Conçu avec des cabinets camerounais
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Onboarding accompagné, migration de vos dossiers existants et formation de votre équipe :
-              vous êtes opérationnel en quelques jours.
+              Onboarding accompagné, migration de vos dossiers existants et formation de votre
+              équipe : vous êtes opérationnel en quelques jours.
             </p>
           </div>
           <ul className="space-y-3">

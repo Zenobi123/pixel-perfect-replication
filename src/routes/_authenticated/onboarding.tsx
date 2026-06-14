@@ -4,7 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
@@ -32,7 +38,10 @@ function Onboarding() {
       _devise: "XAF",
     });
     setLoading(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     if (data && typeof window !== "undefined") {
       localStorage.setItem("kompta.current_entreprise_id", data as string);
     }
@@ -46,23 +55,37 @@ function Onboarding() {
         <CardHeader>
           <CardTitle>Créez votre première entreprise</CardTitle>
           <CardDescription>
-            Quelques informations pour démarrer votre comptabilité OHADA. Vous pourrez ajuster tout cela ensuite.
+            Quelques informations pour démarrer votre comptabilité OHADA. Vous pourrez ajuster tout
+            cela ensuite.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="rs">Raison sociale *</Label>
-              <Input id="rs" required value={raisonSociale} onChange={(e) => setRaisonSociale(e.target.value)} placeholder="Ex. KOMPTA SARL" />
+              <Input
+                id="rs"
+                required
+                value={raisonSociale}
+                onChange={(e) => setRaisonSociale(e.target.value)}
+                placeholder="Ex. KOMPTA SARL"
+              />
             </div>
             <div>
               <Label htmlFor="niu">NIU (Numéro d'Identifiant Unique)</Label>
-              <Input id="niu" value={niu} onChange={(e) => setNiu(e.target.value)} placeholder="Optionnel" />
+              <Input
+                id="niu"
+                value={niu}
+                onChange={(e) => setNiu(e.target.value)}
+                placeholder="Optionnel"
+              />
             </div>
             <div>
               <Label htmlFor="regime">Régime fiscal *</Label>
               <Select value={regime} onValueChange={(v) => setRegime(v as Regime)}>
-                <SelectTrigger id="regime"><SelectValue /></SelectTrigger>
+                <SelectTrigger id="regime">
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="reel">Régime du réel</SelectItem>
                   <SelectItem value="simplifie">Régime simplifié</SelectItem>
@@ -72,7 +95,8 @@ function Onboarding() {
               </Select>
             </div>
             <p className="text-xs text-muted-foreground">
-              Devise : XAF (FCFA). Un exercice comptable couvrant l'année en cours sera créé automatiquement.
+              Devise : XAF (FCFA). Un exercice comptable couvrant l'année en cours sera créé
+              automatiquement.
             </p>
             <Button type="submit" className="w-full" disabled={loading || !raisonSociale}>
               {loading ? "Création…" : "Créer mon entreprise"}

@@ -13,7 +13,10 @@ export const Route = createFileRoute("/contact")({
           "Contactez l'équipe Kompta pour une démo, une migration depuis Sage/Ciel/Excel ou une question sur la fiscalité camerounaise.",
       },
       { property: "og:title", content: "Contact Kompta" },
-      { property: "og:description", content: "Démo, migration, questions : nous vous répondons en 24h ouvrées." },
+      {
+        property: "og:description",
+        content: "Démo, migration, questions : nous vous répondons en 24h ouvrées.",
+      },
     ],
   }),
   component: ContactPage,
@@ -50,7 +53,9 @@ function ContactPage() {
             <Field label="Téléphone" name="phone" type="tel" />
           </div>
           <div className="mt-4">
-            <label htmlFor="msg" className="text-sm font-medium">Message</label>
+            <label htmlFor="msg" className="text-sm font-medium">
+              Message
+            </label>
             <textarea
               id="msg"
               name="message"
@@ -68,7 +73,8 @@ function ContactPage() {
           </button>
           {sent && (
             <p className="mt-4 text-sm text-success">
-              Merci, nous revenons vers vous très vite. (Maquette — la prochaine phase branchera l'envoi réel.)
+              Merci, nous revenons vers vous très vite. (Maquette — la prochaine phase branchera
+              l'envoi réel.)
             </p>
           )}
         </form>
@@ -78,10 +84,12 @@ function ContactPage() {
           <InfoCard icon={Phone} title="Téléphone" content="+237 6 00 00 00 00" />
           <InfoCard icon={MapPin} title="Adresse" content="Bastos, Yaoundé — Cameroun" />
           <div className="rounded-2xl bg-surface-elevated p-6">
-            <h3 className="font-display text-base font-semibold">Migration depuis votre outil actuel</h3>
+            <h3 className="font-display text-base font-semibold">
+              Migration depuis votre outil actuel
+            </h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Excel, Sage, Ciel, Saari — nous reprenons votre plan comptable et vos balances pour vous faire
-              démarrer sans rupture.
+              Excel, Sage, Ciel, Saari — nous reprenons votre plan comptable et vos balances pour
+              vous faire démarrer sans rupture.
             </p>
           </div>
         </aside>
@@ -90,7 +98,17 @@ function ContactPage() {
   );
 }
 
-function Field({ label, name, type = "text", required = false }: { label: string; name: string; type?: string; required?: boolean }) {
+function Field({
+  label,
+  name,
+  type = "text",
+  required = false,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
   return (
     <div>
       <label htmlFor={name} className="text-sm font-medium">
@@ -107,14 +125,24 @@ function Field({ label, name, type = "text", required = false }: { label: string
   );
 }
 
-function InfoCard({ icon: Icon, title, content }: { icon: typeof Mail; title: string; content: string }) {
+function InfoCard({
+  icon: Icon,
+  title,
+  content,
+}: {
+  icon: typeof Mail;
+  title: string;
+  content: string;
+}) {
   return (
     <div className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 shadow-card">
       <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent">
         <Icon className="h-5 w-5" />
       </span>
       <div>
-        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{title}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          {title}
+        </p>
         <p className="mt-0.5 text-sm font-medium">{content}</p>
       </div>
     </div>

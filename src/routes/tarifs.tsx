@@ -13,7 +13,10 @@ export const Route = createFileRoute("/tarifs")({
           "Choisissez votre offre Kompta : Essentiel, Standard, Professionnel ou Cabinet. Tarifs en FCFA, économisez 2 mois en annuel. Essai 14 jours.",
       },
       { property: "og:title", content: "Tarifs Kompta" },
-      { property: "og:description", content: "Abonnements mensuels et annuels pour la comptabilité OHADA." },
+      {
+        property: "og:description",
+        content: "Abonnements mensuels et annuels pour la comptabilité OHADA.",
+      },
     ],
   }),
   component: PricingPage,
@@ -83,8 +86,7 @@ const plans: Plan[] = [
   },
 ];
 
-const fmt = (n: number) =>
-  new Intl.NumberFormat("fr-FR").format(n).replace(/\u202f/g, " ");
+const fmt = (n: number) => new Intl.NumberFormat("fr-FR").format(n).replace(/\u202f/g, " ");
 
 function PricingPage() {
   const [annual, setAnnual] = useState(true);
@@ -120,7 +122,10 @@ function PricingPage() {
                 annual ? "bg-primary text-primary-foreground" : "text-muted-foreground"
               }`}
             >
-              Annuel <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-primary">−17%</span>
+              Annuel{" "}
+              <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-primary">
+                −17%
+              </span>
             </button>
           </div>
         </div>

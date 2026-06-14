@@ -26,17 +26,37 @@ export function Footer() {
           <div>
             <h4 className="font-display text-sm font-semibold text-ink">Produit</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li><Link to="/fonctionnalites" className="hover:text-accent">Fonctionnalités</Link></li>
-              <li><Link to="/tarifs" className="hover:text-accent">Tarifs</Link></li>
-              <li><Link to="/cabinets" className="hover:text-accent">Pour les cabinets</Link></li>
+              <li>
+                <Link to="/fonctionnalites" className="hover:text-accent">
+                  Fonctionnalités
+                </Link>
+              </li>
+              <li>
+                <Link to="/tarifs" className="hover:text-accent">
+                  Tarifs
+                </Link>
+              </li>
+              <li>
+                <Link to="/cabinets" className="hover:text-accent">
+                  Pour les cabinets
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-display text-sm font-semibold text-ink">Société</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li><Link to="/contact" className="hover:text-accent">Contact</Link></li>
-              <li><Link to="/legal" className="hover:text-accent">Mentions légales</Link></li>
+              <li>
+                <Link to="/contact" className="hover:text-accent">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/legal" className="hover:text-accent">
+                  Mentions légales
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

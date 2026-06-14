@@ -1,11 +1,19 @@
 // Captures the original Error out-of-band so server.ts can recover the stack
 // when h3 has already swallowed the throw into a generic 500 Response.
 
+import { reportError } from "./observability";
+
 let lastCapturedError: { error: unknown; at: number } | undefined;
 const TTL_MS = 5_000;
 
 function record(error: unknown) {
   lastCapturedError = { error, at: Date.now() };
+  // Côté navigateur, ces handlers globaux sont le dernier recours : on reporte
+  // immédiatement. Côté serveur, l'erreur est consommée puis reportée par
+  // server.ts / start.ts, d'où le garde pour éviter un double report.
+  if (typeof window !== "undefined") {
+    reportError(error, { scope: "global-handler" });
+  }
 }
 
 if (typeof globalThis.addEventListener === "function") {

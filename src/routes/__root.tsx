@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { AuthProvider } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
+import { reportError } from "@/lib/observability";
 
 import appCss from "../styles.css?url";
 
@@ -46,8 +47,11 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
   const router = useRouter();
+
+  useEffect(() => {
+    reportError(error, { scope: "react-error-boundary" });
+  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">

@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Plus, Trash2, Check, ArrowLeftRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAbonnement } from "@/hooks/use-abonnement";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +54,8 @@ export function EcritureForm({
 }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { data: abonnement } = useAbonnement();
+  const ecritureBloquee = abonnement ? !abonnement.peut_ecrire : false;
   const readOnly = initial?.statut && initial.statut !== "brouillon";
 
   const [header, setHeader] = useState<EcritureHeader>(
@@ -138,6 +141,10 @@ export function EcritureForm({
   }
 
   async function save(validate: boolean) {
+    if (ecritureBloquee) {
+      toast.error("Saisie suspendue : abonnement inactif. Rendez-vous sur la page Abonnement.");
+      return;
+    }
     if (!header.journal_id || !header.exercice_id) {
       toast.error("Journal et exercice requis");
       return;
@@ -198,6 +205,12 @@ export function EcritureForm({
 
   return (
     <div className="space-y-4 max-w-6xl">
+      {!readOnly && ecritureBloquee && (
+        <div className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2 text-sm text-destructive">
+          Saisie suspendue : votre abonnement est inactif. Vos données restent consultables et
+          exportables. Activez une offre depuis la page Abonnement pour reprendre la saisie.
+        </div>
+      )}
       {readOnly && (
         <div className="rounded-md border border-primary/30 bg-primary/5 px-4 py-2 text-sm flex items-center gap-2">
           <Badge>{initial?.statut === "validee" ? "Validée" : "Contre-passée"}</Badge>
@@ -402,10 +415,17 @@ export function EcritureForm({
         )}
         {!readOnly && (
           <>
-            <Button variant="outline" onClick={() => save(false)} disabled={saving}>
+            <Button
+              variant="outline"
+              onClick={() => save(false)}
+              disabled={saving || ecritureBloquee}
+            >
               Enregistrer brouillon
             </Button>
-            <Button onClick={() => save(true)} disabled={saving || !totals.balanced}>
+            <Button
+              onClick={() => save(true)}
+              disabled={saving || !totals.balanced || ecritureBloquee}
+            >
               <Check className="h-4 w-4 mr-1" /> Valider
             </Button>
           </>

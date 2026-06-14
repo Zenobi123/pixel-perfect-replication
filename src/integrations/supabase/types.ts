@@ -1327,11 +1327,168 @@ export type Database = {
         };
         Relationships: [];
       };
+      plans: {
+        Row: {
+          code: string;
+          libelle: string;
+          max_entreprises: number | null;
+          max_utilisateurs: number | null;
+          ordre: number;
+          prix_mensuel: number;
+        };
+        Insert: {
+          code: string;
+          libelle: string;
+          max_entreprises?: number | null;
+          max_utilisateurs?: number | null;
+          ordre: number;
+          prix_mensuel: number;
+        };
+        Update: {
+          code?: string;
+          libelle?: string;
+          max_entreprises?: number | null;
+          max_utilisateurs?: number | null;
+          ordre?: number;
+          prix_mensuel?: number;
+        };
+        Relationships: [];
+      };
+      abonnements: {
+        Row: {
+          created_at: string;
+          cycle: Database["public"]["Enums"]["cycle_facturation"];
+          id: string;
+          owner_id: string;
+          periode_fin: string | null;
+          plan_code: string;
+          statut: Database["public"]["Enums"]["abonnement_statut"];
+          trial_fin: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          cycle?: Database["public"]["Enums"]["cycle_facturation"];
+          id?: string;
+          owner_id: string;
+          periode_fin?: string | null;
+          plan_code?: string;
+          statut?: Database["public"]["Enums"]["abonnement_statut"];
+          trial_fin?: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          cycle?: Database["public"]["Enums"]["cycle_facturation"];
+          id?: string;
+          owner_id?: string;
+          periode_fin?: string | null;
+          plan_code?: string;
+          statut?: Database["public"]["Enums"]["abonnement_statut"];
+          trial_fin?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "abonnements_plan_code_fkey";
+            columns: ["plan_code"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
+      paiements_abonnement: {
+        Row: {
+          abonnement_id: string;
+          cycle: Database["public"]["Enums"]["cycle_facturation"];
+          declared_at: string;
+          id: string;
+          methode: Database["public"]["Enums"]["paiement_methode"];
+          montant: number;
+          note: string | null;
+          owner_id: string;
+          plan_code: string;
+          reference: string | null;
+          statut: Database["public"]["Enums"]["paiement_statut"];
+          validated_at: string | null;
+          validated_by: string | null;
+        };
+        Insert: {
+          abonnement_id: string;
+          cycle: Database["public"]["Enums"]["cycle_facturation"];
+          declared_at?: string;
+          id?: string;
+          methode: Database["public"]["Enums"]["paiement_methode"];
+          montant: number;
+          note?: string | null;
+          owner_id: string;
+          plan_code: string;
+          reference?: string | null;
+          statut?: Database["public"]["Enums"]["paiement_statut"];
+          validated_at?: string | null;
+          validated_by?: string | null;
+        };
+        Update: {
+          abonnement_id?: string;
+          cycle?: Database["public"]["Enums"]["cycle_facturation"];
+          declared_at?: string;
+          id?: string;
+          methode?: Database["public"]["Enums"]["paiement_methode"];
+          montant?: number;
+          note?: string | null;
+          owner_id?: string;
+          plan_code?: string;
+          reference?: string | null;
+          statut?: Database["public"]["Enums"]["paiement_statut"];
+          validated_at?: string | null;
+          validated_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "paiements_abonnement_abonnement_id_fkey";
+            columns: ["abonnement_id"];
+            isOneToOne: false;
+            referencedRelation: "abonnements";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "paiements_abonnement_plan_code_fkey";
+            columns: ["plan_code"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
+      mon_abonnement: {
+        Args: Record<string, never>;
+        Returns: Json;
+      };
+      declarer_paiement: {
+        Args: {
+          _cycle: Database["public"]["Enums"]["cycle_facturation"];
+          _methode: Database["public"]["Enums"]["paiement_methode"];
+          _montant: number;
+          _note?: string;
+          _plan_code: string;
+          _reference?: string;
+        };
+        Returns: string;
+      };
+      valider_paiement: {
+        Args: { _paiement_id: string };
+        Returns: undefined;
+      };
+      rejeter_paiement: {
+        Args: { _note?: string; _paiement_id: string };
+        Returns: undefined;
+      };
       activer_abonnement: {
         Args: {
           _entreprise_id: string;
@@ -1460,6 +1617,17 @@ export type Database = {
       verrouiller_periode: { Args: { _periode_id: string }; Returns: undefined };
     };
     Enums: {
+      abonnement_statut:
+        | "trial"
+        | "active"
+        | "past_due"
+        | "grace_period"
+        | "suspended"
+        | "cancelled"
+        | "archived";
+      cycle_facturation: "mensuel" | "annuel";
+      paiement_methode: "mobile_money" | "virement_bancaire" | "especes" | "autre";
+      paiement_statut: "en_attente" | "valide" | "rejete";
       declaration_statut: "a_preparer" | "en_revue" | "validee" | "deposee" | "payee" | "archivee";
       mouvement_tresorerie_type: "encaissement" | "decaissement" | "transfert";
       ticket_priorite: "basse" | "normale" | "haute";

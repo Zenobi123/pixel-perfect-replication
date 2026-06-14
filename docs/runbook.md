@@ -297,3 +297,46 @@ une défense en profondeur au niveau du document. C'est une refonte de l'auth
 - **Procédure pour ajouter une pré-version** : l'inscrire dans `ALLOWLIST`
   (scripts/check-prerelease-deps.mjs) avec justification et condition de sortie,
   puis la documenter ici. Sinon, préférer une version stable.
+
+---
+
+## 14. Abonnements et paiements (v0 — validation manuelle)
+
+Modèle : l'abonnement appartient au **compte propriétaire** ; le plan définit
+les limites (Essentiel/Standard/Pro = 1 entreprise ; Cabinet = illimité). Essai
+gratuit de **14 jours** créé paresseusement au premier appel de `mon_abonnement`.
+
+**Cycle de vie (paiement manuel)** :
+
+1. Le client choisit une offre et **déclare un paiement** dans `/app/abonnement`
+   (RPC `declarer_paiement`) après avoir réglé par son moyen habituel
+   (Mobile Money, virement, espèces).
+2. Un **administrateur** (`app_role = 'super_admin'`) ouvre `/app/admin/paiements`,
+   vérifie le règlement et **valide** (RPC `valider_paiement`) : l'abonnement
+   passe `active` et la période payée est prolongée (1 ou 12 mois selon le cycle).
+   Le rejet (`rejeter_paiement`) est aussi possible.
+
+**Désigner un administrateur** : insérer le rôle dans `user_roles`.
+
+```sql
+insert into public.user_roles (user_id, role) values ('<uuid-auth-users>', 'super_admin');
+```
+
+**Accès quand l'abonnement est inactif** (essai expiré / non payé) : la **lecture
+et l'export restent disponibles**, mais la **saisie d'écritures est bloquée** (UI :
+boutons désactivés + bandeau ; la fonction `mon_abonnement` calcule `peut_ecrire`).
+
+**Limites assumées du v0** (pistes de durcissement, hors périmètre actuel) :
+
+- **Enforcement côté client** : le blocage d'écriture est appliqué dans l'UI. Une
+  protection inviolable nécessiterait un contrôle d'abonnement **dans les RPC
+  comptables** (`save_ecriture_brouillon`, etc.). Volontairement non fait ici pour
+  rester additif et ne pas modifier les fonctions couvertes par le test golden
+  (qui devrait alors provisionner un abonnement dans son harnais).
+- **Périmètre du blocage** : appliqué à la saisie d'**écritures** (cœur comptable)
+  et signalé globalement par le bandeau. À étendre aux formulaires ventes/achats/
+  trésorerie si besoin.
+- **Limites de plan** (max entreprises/utilisateurs) : stockées dans `plans` et
+  affichées, mais **non encore imposées** à la création.
+- **Paiement en ligne** (Stripe / Mobile Money automatisé) : non intégré au v0,
+  conformément au cahier (après validation commerciale).

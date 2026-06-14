@@ -27,6 +27,7 @@ import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppFiscaliteRouteImport } from './routes/_authenticated/app.fiscalite'
 import { Route as AuthenticatedAppExportRouteImport } from './routes/_authenticated/app.export'
 import { Route as AuthenticatedAppComptabiliteRouteImport } from './routes/_authenticated/app.comptabilite'
+import { Route as AuthenticatedAppAbonnementRouteImport } from './routes/_authenticated/app.abonnement'
 import { Route as AuthenticatedAppVentesIndexRouteImport } from './routes/_authenticated/app.ventes.index'
 import { Route as AuthenticatedAppTresorerieIndexRouteImport } from './routes/_authenticated/app.tresorerie.index'
 import { Route as AuthenticatedAppComptabiliteIndexRouteImport } from './routes/_authenticated/app.comptabilite.index'
@@ -41,6 +42,7 @@ import { Route as AuthenticatedAppComptabiliteJournalRouteImport } from './route
 import { Route as AuthenticatedAppComptabiliteGrandLivreRouteImport } from './routes/_authenticated/app.comptabilite.grand-livre'
 import { Route as AuthenticatedAppComptabiliteBalanceAuxiliaireRouteImport } from './routes/_authenticated/app.comptabilite.balance-auxiliaire'
 import { Route as AuthenticatedAppComptabiliteBalanceRouteImport } from './routes/_authenticated/app.comptabilite.balance'
+import { Route as AuthenticatedAppAdminPaiementsRouteImport } from './routes/_authenticated/app.admin.paiements'
 import { Route as AuthenticatedAppAchatsNouvelleRouteImport } from './routes/_authenticated/app.achats.nouvelle'
 import { Route as AuthenticatedAppAchatsIdRouteImport } from './routes/_authenticated/app.achats.$id'
 import { Route as AuthenticatedAppComptabiliteEcrituresIndexRouteImport } from './routes/_authenticated/app.comptabilite.ecritures.index'
@@ -138,6 +140,12 @@ const AuthenticatedAppComptabiliteRoute =
     path: '/comptabilite',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppAbonnementRoute =
+  AuthenticatedAppAbonnementRouteImport.update({
+    id: '/abonnement',
+    path: '/abonnement',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppVentesIndexRoute =
   AuthenticatedAppVentesIndexRouteImport.update({
     id: '/ventes/',
@@ -222,6 +230,12 @@ const AuthenticatedAppComptabiliteBalanceRoute =
     path: '/balance',
     getParentRoute: () => AuthenticatedAppComptabiliteRoute,
   } as any)
+const AuthenticatedAppAdminPaiementsRoute =
+  AuthenticatedAppAdminPaiementsRouteImport.update({
+    id: '/admin/paiements',
+    path: '/admin/paiements',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppAchatsNouvelleRoute =
   AuthenticatedAppAchatsNouvelleRouteImport.update({
     id: '/achats/nouvelle',
@@ -265,6 +279,7 @@ export interface FileRoutesByFullPath {
   '/tarifs': typeof TarifsRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/abonnement': typeof AuthenticatedAppAbonnementRoute
   '/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/app/export': typeof AuthenticatedAppExportRoute
   '/app/fiscalite': typeof AuthenticatedAppFiscaliteRoute
@@ -273,6 +288,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
   '/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
+  '/app/admin/paiements': typeof AuthenticatedAppAdminPaiementsRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
@@ -302,6 +318,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tarifs': typeof TarifsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/abonnement': typeof AuthenticatedAppAbonnementRoute
   '/app/export': typeof AuthenticatedAppExportRoute
   '/app/fiscalite': typeof AuthenticatedAppFiscaliteRoute
   '/app/support': typeof AuthenticatedAppSupportRoute
@@ -309,6 +326,7 @@ export interface FileRoutesByTo {
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
   '/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
+  '/app/admin/paiements': typeof AuthenticatedAppAdminPaiementsRoute
   '/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   '/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
@@ -341,6 +359,7 @@ export interface FileRoutesById {
   '/tarifs': typeof TarifsRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/abonnement': typeof AuthenticatedAppAbonnementRoute
   '/_authenticated/app/comptabilite': typeof AuthenticatedAppComptabiliteRouteWithChildren
   '/_authenticated/app/export': typeof AuthenticatedAppExportRoute
   '/_authenticated/app/fiscalite': typeof AuthenticatedAppFiscaliteRoute
@@ -349,6 +368,7 @@ export interface FileRoutesById {
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/achats/$id': typeof AuthenticatedAppAchatsIdRoute
   '/_authenticated/app/achats/nouvelle': typeof AuthenticatedAppAchatsNouvelleRoute
+  '/_authenticated/app/admin/paiements': typeof AuthenticatedAppAdminPaiementsRoute
   '/_authenticated/app/comptabilite/balance': typeof AuthenticatedAppComptabiliteBalanceRoute
   '/_authenticated/app/comptabilite/balance-auxiliaire': typeof AuthenticatedAppComptabiliteBalanceAuxiliaireRoute
   '/_authenticated/app/comptabilite/grand-livre': typeof AuthenticatedAppComptabiliteGrandLivreRoute
@@ -381,6 +401,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/app'
     | '/onboarding'
+    | '/app/abonnement'
     | '/app/comptabilite'
     | '/app/export'
     | '/app/fiscalite'
@@ -389,6 +410,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/achats/$id'
     | '/app/achats/nouvelle'
+    | '/app/admin/paiements'
     | '/app/comptabilite/balance'
     | '/app/comptabilite/balance-auxiliaire'
     | '/app/comptabilite/grand-livre'
@@ -418,6 +440,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tarifs'
     | '/onboarding'
+    | '/app/abonnement'
     | '/app/export'
     | '/app/fiscalite'
     | '/app/support'
@@ -425,6 +448,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/achats/$id'
     | '/app/achats/nouvelle'
+    | '/app/admin/paiements'
     | '/app/comptabilite/balance'
     | '/app/comptabilite/balance-auxiliaire'
     | '/app/comptabilite/grand-livre'
@@ -456,6 +480,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/abonnement'
     | '/_authenticated/app/comptabilite'
     | '/_authenticated/app/export'
     | '/_authenticated/app/fiscalite'
@@ -464,6 +489,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/'
     | '/_authenticated/app/achats/$id'
     | '/_authenticated/app/achats/nouvelle'
+    | '/_authenticated/app/admin/paiements'
     | '/_authenticated/app/comptabilite/balance'
     | '/_authenticated/app/comptabilite/balance-auxiliaire'
     | '/_authenticated/app/comptabilite/grand-livre'
@@ -624,6 +650,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppComptabiliteRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/abonnement': {
+      id: '/_authenticated/app/abonnement'
+      path: '/abonnement'
+      fullPath: '/app/abonnement'
+      preLoaderRoute: typeof AuthenticatedAppAbonnementRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/ventes/': {
       id: '/_authenticated/app/ventes/'
       path: '/ventes'
@@ -722,6 +755,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppComptabiliteBalanceRouteImport
       parentRoute: typeof AuthenticatedAppComptabiliteRoute
     }
+    '/_authenticated/app/admin/paiements': {
+      id: '/_authenticated/app/admin/paiements'
+      path: '/admin/paiements'
+      fullPath: '/app/admin/paiements'
+      preLoaderRoute: typeof AuthenticatedAppAdminPaiementsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/achats/nouvelle': {
       id: '/_authenticated/app/achats/nouvelle'
       path: '/achats/nouvelle'
@@ -806,6 +846,7 @@ const AuthenticatedAppComptabiliteRouteWithChildren =
   )
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppAbonnementRoute: typeof AuthenticatedAppAbonnementRoute
   AuthenticatedAppComptabiliteRoute: typeof AuthenticatedAppComptabiliteRouteWithChildren
   AuthenticatedAppExportRoute: typeof AuthenticatedAppExportRoute
   AuthenticatedAppFiscaliteRoute: typeof AuthenticatedAppFiscaliteRoute
@@ -814,6 +855,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppAchatsIdRoute: typeof AuthenticatedAppAchatsIdRoute
   AuthenticatedAppAchatsNouvelleRoute: typeof AuthenticatedAppAchatsNouvelleRoute
+  AuthenticatedAppAdminPaiementsRoute: typeof AuthenticatedAppAdminPaiementsRoute
   AuthenticatedAppTresorerieIdRoute: typeof AuthenticatedAppTresorerieIdRoute
   AuthenticatedAppVentesIdRoute: typeof AuthenticatedAppVentesIdRoute
   AuthenticatedAppVentesNouvelleRoute: typeof AuthenticatedAppVentesNouvelleRoute
@@ -823,6 +865,7 @@ interface AuthenticatedAppRouteChildren {
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppAbonnementRoute: AuthenticatedAppAbonnementRoute,
   AuthenticatedAppComptabiliteRoute:
     AuthenticatedAppComptabiliteRouteWithChildren,
   AuthenticatedAppExportRoute: AuthenticatedAppExportRoute,
@@ -832,6 +875,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppAchatsIdRoute: AuthenticatedAppAchatsIdRoute,
   AuthenticatedAppAchatsNouvelleRoute: AuthenticatedAppAchatsNouvelleRoute,
+  AuthenticatedAppAdminPaiementsRoute: AuthenticatedAppAdminPaiementsRoute,
   AuthenticatedAppTresorerieIdRoute: AuthenticatedAppTresorerieIdRoute,
   AuthenticatedAppVentesIdRoute: AuthenticatedAppVentesIdRoute,
   AuthenticatedAppVentesNouvelleRoute: AuthenticatedAppVentesNouvelleRoute,
@@ -872,3 +916,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

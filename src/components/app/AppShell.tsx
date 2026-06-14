@@ -12,6 +12,8 @@ import {
   ShoppingCart,
   Landmark,
   LifeBuoy,
+  CreditCard,
+  ShieldCheck,
   Menu,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -19,6 +21,8 @@ import { useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useEntreprises } from "@/hooks/use-entreprises";
+import { useAbonnement, useEstAdmin } from "@/hooks/use-abonnement";
+import { bandeauAbonnement } from "@/lib/abonnement";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -46,6 +50,7 @@ const NAV: NavItem[] = [
   { to: "/app/tresorerie", label: "Trésorerie", icon: Wallet },
   { to: "/app/fiscalite", label: "Fiscalité", icon: Landmark },
   { to: "/app/tiers", label: "Tiers", icon: Users },
+  { to: "/app/abonnement", label: "Abonnement", icon: CreditCard },
   { to: "/app/export", label: "Sauvegarde", icon: Archive },
   { to: "/app/support", label: "Support", icon: LifeBuoy },
   { to: "/app/parametres", label: "Paramètres", icon: Settings, soon: true },
@@ -56,6 +61,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { entreprises, current, setCurrent } = useEntreprises();
+  const { data: estAdmin } = useEstAdmin();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -133,6 +139,17 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             </Link>
           );
         })}
+
+        {estAdmin && (
+          <Link
+            to={"/app/admin/paiements" as never}
+            onClick={onNavigate}
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors [&.active]:bg-accent [&.active]:text-foreground"
+          >
+            <ShieldCheck className="h-4 w-4" />
+            <span className="flex-1">Validation paiements</span>
+          </Link>
+        )}
       </nav>
 
       <div className="p-3 border-t space-y-2">
@@ -140,6 +157,30 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleLogout}>
           <LogOut className="h-4 w-4 mr-2" /> Se déconnecter
         </Button>
+      </div>
+    </div>
+  );
+}
+
+/** Bandeau global incitant au paiement (essai bientôt fini, accès suspendu…). */
+function AbonnementBanner() {
+  const { data: abonnement } = useAbonnement();
+  if (!abonnement) return null;
+  const info = bandeauAbonnement(abonnement);
+  if (!info) return null;
+  return (
+    <div
+      className={
+        info.ton === "alerte"
+          ? "border-b bg-destructive/10 px-4 py-2 text-sm text-destructive"
+          : "border-b bg-primary/5 px-4 py-2 text-sm text-foreground"
+      }
+    >
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span>{info.texte}</span>
+        <Link to={"/app/abonnement" as never} className="font-medium text-primary hover:underline">
+          Gérer l'abonnement
+        </Link>
       </div>
     </div>
   );
@@ -174,6 +215,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
         </header>
 
+        <AbonnementBanner />
         <main className="flex-1 min-w-0">{children}</main>
       </div>
     </div>

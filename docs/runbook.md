@@ -255,3 +255,20 @@ Posture retenue et revue — à connaître avant toute évolution de l'auth :
 **cookie** (`@supabase/ssr`) permettrait une vraie redirection côté serveur et
 une défense en profondeur au niveau du document. C'est une refonte de l'auth
 (risque de régression du login) à planifier séparément, pas un correctif.
+
+---
+
+## 12. Sécurité des dépendances
+
+- **Garde CI** : le job `application` exécute `npm audit --audit-level=high`.
+  Toute vulnérabilité high/critical fait échouer la CI.
+- **Advisory sans correctif amont** : forcer une version corrigée via le champ
+  `overrides` de `package.json` (cf. `esbuild` épinglé à la première version non
+  vulnérable), puis revalider avec `npm run check`. Si aucune version corrigée
+  n'existe et que la faille ne concerne pas le runtime de production (ex. outil
+  de build / serveur de dev uniquement), documenter l'exception ici avec sa
+  justification et la date de revue.
+- **Rappel** : le bundle déployé (Worker) ne contient pas l'outillage de build
+  (esbuild, vite, wrangler). Une faille de serveur de développement n'expose
+  donc pas la production, mais reste à corriger pour les postes de développement.
+- **Exceptions en cours** : _aucune_ (audit à 0 vulnérabilité au dernier passage).

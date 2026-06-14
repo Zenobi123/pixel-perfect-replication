@@ -24,6 +24,11 @@ jobs:
           SUPABASE_URL: https://owdvxfvpolawafxzmnyx.supabase.co
           SUPABASE_PROJECT_ID: owdvxfvpolawafxzmnyx
           SUPABASE_PUBLISHABLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93ZHZ4ZnZwb2xhd2FmeHptbnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0ODUyNTMsImV4cCI6MjA5NTA2MTI1M30.MySpMqA8J1UzwdECTOKiVNal_hXfvQlIn59GXtl_SKE
+      # Garde anti-régression de sécurité : échoue si une vulnérabilité high/critical
+      # apparaît. En cas d'advisory sans correctif, ajouter un `overrides` dans
+      # package.json (cf. esbuild) ou documenter l'exception — voir docs/runbook.md §12.
+      - name: Audit de sécurité des dépendances
+        run: npm audit --audit-level=high
   database:
     runs-on: ubuntu-latest
     steps:

@@ -5,7 +5,10 @@ export const Route = createFileRoute("/legal")({
   head: () => ({
     meta: [
       { title: "Mentions légales — Kompta" },
-      { name: "description", content: "Mentions légales et informations éditeur de Kompta, SaaS comptable OHADA." },
+      {
+        name: "description",
+        content: "Mentions légales et informations éditeur de Kompta, SaaS comptable OHADA.",
+      },
     ],
   }),
   component: LegalPage,
@@ -23,14 +26,21 @@ function LegalPage() {
           </section>
           <section>
             <h2 className="font-display text-lg font-semibold text-ink">Hébergement</h2>
-            <p>Plateforme hébergée sur infrastructure cloud sécurisée. Données chiffrées au repos et en transit.</p>
+            <p>
+              Plateforme hébergée sur infrastructure cloud sécurisée. Données chiffrées au repos et
+              en transit.
+            </p>
           </section>
           <section>
             <h2 className="font-display text-lg font-semibold text-ink">Données personnelles</h2>
             <p>
               Conformément à la loi camerounaise sur la cybersécurité et la protection des données,
               vous disposez d'un droit d'accès, de rectification et de suppression de vos données.
-              Contact : <a href="mailto:privacy@kompta.cm" className="text-accent hover:underline">privacy@kompta.cm</a>.
+              Contact :{" "}
+              <a href="mailto:privacy@kompta.cm" className="text-accent hover:underline">
+                privacy@kompta.cm
+              </a>
+              .
             </p>
           </section>
           <section>
@@ -42,8 +52,13 @@ function LegalPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-lg font-semibold text-ink">Propriété intellectuelle</h2>
-            <p>L'ensemble du site et du logiciel est protégé par le droit d'auteur. Toute reproduction sans autorisation est interdite.</p>
+            <h2 className="font-display text-lg font-semibold text-ink">
+              Propriété intellectuelle
+            </h2>
+            <p>
+              L'ensemble du site et du logiciel est protégé par le droit d'auteur. Toute
+              reproduction sans autorisation est interdite.
+            </p>
           </section>
         </div>
       </article>

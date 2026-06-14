@@ -41,7 +41,8 @@ function JournauxPage() {
       <div>
         <h2 className="text-lg font-semibold">Journaux comptables</h2>
         <p className="text-sm text-muted-foreground">
-          6 journaux standards créés automatiquement. La création de journaux personnalisés arrive bientôt.
+          6 journaux standards créés automatiquement. La création de journaux personnalisés arrive
+          bientôt.
         </p>
       </div>
 
@@ -58,7 +59,9 @@ function JournauxPage() {
                   <div className="text-xs text-muted-foreground uppercase">{j.type}</div>
                 </div>
               </div>
-              <Badge variant={j.actif ? "default" : "outline"}>{j.actif ? "Actif" : "Inactif"}</Badge>
+              <Badge variant={j.actif ? "default" : "outline"}>
+                {j.actif ? "Actif" : "Inactif"}
+              </Badge>
             </Card>
           ))}
         </div>

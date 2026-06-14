@@ -116,9 +116,15 @@ function HomePage() {
               </Link>
             </div>
             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs text-white/60">
-              <li className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-accent" /> Sans carte bancaire</li>
-              <li className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-accent" /> Données hébergées</li>
-              <li className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-accent" /> Support en français</li>
+              <li className="inline-flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 text-accent" /> Sans carte bancaire
+              </li>
+              <li className="inline-flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 text-accent" /> Données hébergées
+              </li>
+              <li className="inline-flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 text-accent" /> Support en français
+              </li>
             </ul>
           </motion.div>
 

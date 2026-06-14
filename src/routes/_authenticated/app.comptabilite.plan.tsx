@@ -88,7 +88,10 @@ function PlanPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1">
                 {items.map((c) => (
-                  <div key={c.id} className="flex items-baseline gap-3 py-1 border-b border-border/40 text-sm">
+                  <div
+                    key={c.id}
+                    className="flex items-baseline gap-3 py-1 border-b border-border/40 text-sm"
+                  >
                     <span className="font-mono font-medium w-16 shrink-0">{c.numero}</span>
                     <span className="flex-1 truncate">{c.libelle}</span>
                     <span className="text-xs text-muted-foreground">{c.sens}</span>

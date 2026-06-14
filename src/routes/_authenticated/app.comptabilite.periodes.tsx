@@ -123,9 +123,7 @@ function PeriodesPage() {
       toast.error(error.message);
       return;
     }
-    toast.success(
-      `Période ${p.libelle} clôturée — saisie verrouillée. Génération de la balance…`,
-    );
+    toast.success(`Période ${p.libelle} clôturée — saisie verrouillée. Génération de la balance…`);
     qc.invalidateQueries({ queryKey: ["periodes", exerciceId] });
     navigate({
       to: "/app/comptabilite/balance",

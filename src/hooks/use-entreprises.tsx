@@ -39,7 +39,11 @@ export function EntreprisesProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
-    if (!user) { setEntreprises([]); setLoading(false); return; }
+    if (!user) {
+      setEntreprises([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     const { data, error } = await supabase
       .from("entreprises")

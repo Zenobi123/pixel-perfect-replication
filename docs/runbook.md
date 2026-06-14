@@ -272,3 +272,28 @@ une défense en profondeur au niveau du document. C'est une refonte de l'auth
   (esbuild, vite, wrangler). Une faille de serveur de développement n'expose
   donc pas la production, mais reste à corriger pour les postes de développement.
 - **Exceptions en cours** : _aucune_ (audit à 0 vulnérabilité au dernier passage).
+
+---
+
+## 13. Stratégie de version des dépendances
+
+- **Installs reproductibles** : `package-lock.json` est versionné ; la CI et les
+  déploiements utilisent `npm ci`. Le `bunfig.toml` ajoute un garde anti
+  supply-chain (`minimumReleaseAge` 24 h) pour `bun`.
+- **Socle (récent mais stable / GA)** : React 19, TanStack Start/Router, Vite 7,
+  Tailwind 4. Mises à jour mineures à valider via `npm run check` (build + tests)
+  avant déploiement.
+- **Pré-versions** : interdites par défaut. Le garde `npm run check:deps`
+  (`scripts/check-prerelease-deps.mjs`) fait échouer la CI si une dépendance
+  beta/alpha/rc/etc. apparaît hors **allowlist**.
+- **Allowlist actuelle** :
+  - **`nitro`** (`3.0.260429-beta`) — exigé par `@lovable.dev/vite-tanstack-config`
+    (build serveur de TanStack Start). Aucune version stable de Nitro 3 n'est
+    publiée (le dist-tag `latest` reste une beta). Pin exact pour rester aligné
+    sur la résolution de la config Lovable. **Non importé dans `src/`** : c'est
+    une dépendance de build, pas du runtime applicatif.
+    **Condition de sortie** : passer à une version stable dès que TanStack Start /
+    la config Lovable la supporte.
+- **Procédure pour ajouter une pré-version** : l'inscrire dans `ALLOWLIST`
+  (scripts/check-prerelease-deps.mjs) avec justification et condition de sortie,
+  puis la documenter ici. Sinon, préférer une version stable.

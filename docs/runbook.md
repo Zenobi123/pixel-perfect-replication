@@ -225,3 +225,33 @@ corriger → déployer → vérifier (§8) → consigner dans un post-mortem.
 - **Clé anon / publishable** : publique par design ; sa rotation n'est requise
   qu'en cas de changement de projet. La sécurité repose sur la RLS.
 - Après toute rotation : redéployer et exécuter le smoke test (§8).
+
+---
+
+## 11. Modèle de sécurité d'authentification (décision assumée)
+
+Posture retenue et revue — à connaître avant toute évolution de l'auth :
+
+- **Frontière de sécurité des données = RLS PostgreSQL.** Aucune donnée tenant
+  n'est accessible sans un JWT valide dont le `sub` est membre de l'entreprise.
+  C'est vérifié par le test d'isolation inter-tenant (`npm run test:rls`).
+- **Server functions** : authentifiées par **Bearer token** (le middleware
+  client `attachSupabaseAuth` joint le token, `requireSupabaseAuth` le valide
+  côté serveur via `getClaims`). Défense en profondeur en complément de la RLS.
+- **Sessions stockées en `localStorage`** (client navigateur). Le serveur ne
+  reçoit donc pas de cookie de session : il **ne peut pas** connaître l'état
+  d'authentification lors du rendu du document initial.
+- **Routes authentifiées rendues côté client uniquement** (`ssr: false` sur
+  `/_authenticated`). Conséquence : le serveur ne produit jamais de contenu
+  authentifié, il n'y a pas de flash de coquille vide pour un visiteur non
+  connecté, et la redirection vers `/login` est effectuée côté client par
+  `beforeLoad`. Un état de chargement neutre est affiché tant que la session
+  n'est pas résolue.
+- **Invariant CI** : `scripts/check-auth-ssr.mjs` garantit que le routeur ne
+  redéclenche pas de redirection serveur sur la seule absence de session
+  navigateur (ce qui provoquerait des redirections erronées en SSR).
+
+**Évolution possible (hors périmètre actuel)** : migrer vers des sessions par
+**cookie** (`@supabase/ssr`) permettrait une vraie redirection côté serveur et
+une défense en profondeur au niveau du document. C'est une refonte de l'auth
+(risque de régression du login) à planifier séparément, pas un correctif.
